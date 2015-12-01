@@ -15,6 +15,7 @@ public class CommunicationManager {
     private static CommunicationManager instance;
     private Configuration configuration;
     private Optional<String> authToken;
+    private Optional<String> cookieWithSessionId;
 
     public static CommunicationManager getInstance() {
         if (instance == null)
@@ -25,6 +26,7 @@ public class CommunicationManager {
     private CommunicationManager() {
         configuration = Configuration.getInstance();
         authToken = Optional.empty();
+        cookieWithSessionId = Optional.empty();
     }
 
     public boolean login(@NotNull String username, @NotNull String password) {
@@ -42,6 +44,8 @@ public class CommunicationManager {
 
         if (response.statusCode() == 200) {
             authToken = Optional.ofNullable(response.asJsonObject().getString("auth_token"));
+            String jsessionid = response.header("Set-Cookie");
+            cookieWithSessionId = Optional.ofNullable(jsessionid);
             return authToken.isPresent();
         }
 
@@ -62,6 +66,7 @@ public class CommunicationManager {
                 .post(configuration.applicationUrl() + "user/logout")
                 .header("application", configuration.applicationAuthToken())
                 .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
                 .send();
 
         if (response.statusCode() == 200)

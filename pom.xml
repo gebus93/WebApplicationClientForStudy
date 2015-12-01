@@ -24,7 +24,7 @@
     <repositories>
         <repository>
             <id>repo</id>
-            <url>file://${project.basedir}/src/main/libraries/RestClient-1.0.jar</url>
+            <url>file://${project.basedir}/src/main/libraries/RestClient-1.1.jar</url>
         </repository>
     </repositories>
     <build>
