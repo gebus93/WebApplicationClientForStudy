@@ -1,11 +1,8 @@
 package pl.gebickionline.security;
 
 import org.jetbrains.annotations.NotNull;
-import pl.gebickionline.communication.CommunicationManager;
+import pl.gebickionline.communication.*;
 
-/**
- * Created by Łukasz on 2015-11-28.
- */
 public class AuthorizationProvider {
     private static AuthorizationProvider instance;
     private CommunicationManager communicationManager;
@@ -13,7 +10,7 @@ public class AuthorizationProvider {
 
     private AuthorizationProvider() {
         loggedIn = false;
-        communicationManager = CommunicationManager.getInstance();
+        communicationManager = CommunicationManagerImpl.getInstance();
     }
 
     public static AuthorizationProvider getInstance() {
@@ -39,6 +36,10 @@ public class AuthorizationProvider {
 
     public boolean isLoggedIn() {
         return loggedIn;
+    }
+
+    void clear() {
+        loggedIn = false;
     }
 
 }
