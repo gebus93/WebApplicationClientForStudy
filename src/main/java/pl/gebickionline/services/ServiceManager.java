@@ -3,6 +3,7 @@ package pl.gebickionline.services;
 import pl.gebickionline.communication.*;
 import pl.gebickionline.services.pricelist.*;
 
+import java.io.*;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,4 @@ public class ServiceManager {
                 .forEach(s -> groups.get(s.groupID()).addService(s));
         return new PriceList(groups.values());
     }
-
-    public static void main(String[] args) {
-        ServiceManager instance = ServiceManager.getInstance();
-        System.out.println(instance.priceList().asList());
-    }
-
 }

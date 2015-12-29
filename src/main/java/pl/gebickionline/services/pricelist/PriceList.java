@@ -28,6 +28,6 @@ public class PriceList {
     }
 
     public byte[] asPdf() {
-        return null;
+        return new PdfPriceList(asList()).toByteArray();
     }
 }
