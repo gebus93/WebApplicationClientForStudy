@@ -1,6 +1,7 @@
 package pl.gebickionline.communication;
 
 import org.jetbrains.annotations.NotNull;
+import pl.gebickionline.services.*;
 
 import java.util.List;
 
@@ -25,4 +26,8 @@ public interface CommunicationManager {
     void turnOffNewsVisibility();
 
     NewsVisibility getNewsVisibility();
+
+    List<Group> getVisibleGroups();
+
+    List<Service> getVisibleServices();
 }

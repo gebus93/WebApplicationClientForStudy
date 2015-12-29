@@ -54,7 +54,7 @@ public class NewsManagerTest {
         News news = newsList.stream()
                 .filter(n -> newsId == n.id())
                 .findFirst()
-                .orElseThrow(() -> new AssertionError());
+                .orElseThrow(AssertionError::new);
 
         assertEquals(title, news.title());
         assertEquals(content, news.content());

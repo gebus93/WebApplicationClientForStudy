@@ -6,6 +6,7 @@ import pl.gebickionline.config.Configuration;
 import pl.gebickionline.exception.*;
 import pl.gebickionline.restclient.*;
 import pl.gebickionline.security.AuthorizationCleaner;
+import pl.gebickionline.services.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -194,7 +195,11 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                 .header("Cookie", cookieWithSessionId.orElse(""))
                 .send();
 
-        switch (response.statusCode()) {
+        assertNewsVisibilityStatusCode(response.statusCode());
+    }
+
+    private void assertNewsVisibilityStatusCode(int statusCode) {
+        switch (statusCode) {
             case 200:
                 return;
             case 401:
@@ -213,14 +218,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                 .header("Cookie", cookieWithSessionId.orElse(""))
                 .send();
 
-        switch (response.statusCode()) {
-            case 200:
-                return;
-            case 401:
-                throw new AuthorizationException();
-            default:
-                throw new RemoteServerError();
-        }
+        assertNewsVisibilityStatusCode(response.statusCode());
     }
 
     @Override
@@ -238,6 +236,46 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
             default:
                 throw new RemoteServerError();
         }
+    }
+
+    @Override
+    public List<Group> getVisibleGroups() {
+        Response response = RestClient
+                .get(configuration.applicationUrl() + "service/group")
+                .header("application", configuration.applicationAuthToken())
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .send();
+
+        if (response.statusCode() != 200)
+            throw new RemoteServerError();
+
+        return response.asList().asObjectList().stream()
+                .map(g -> new Group(g.getLong("id"), g.getString("name"), g.getLong("ordinal")))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Service> getVisibleServices() {
+        Response response = RestClient
+                .get(configuration.applicationUrl() + "service")
+                .header("application", configuration.applicationAuthToken())
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .send();
+
+        if (response.statusCode() != 200)
+            throw new RemoteServerError();
+
+        return response.asList().asObjectList().stream()
+                .map(s -> new Service.Builder()
+                        .withGroupID(s.getLong("groupID"))
+                        .withServiceName(s.getString("name"))
+                        .withOrdinal(s.getLong("ordinal"))
+                        .withPrice(s.getLong("price"))
+                        .withMaxPrice(s.getLong("maxPrice"))
+                        .withMinPrice(s.getLong("minPrice"))
+                        .build()
+                ).collect(Collectors.toList());
+
     }
 
     @Override
