@@ -1,4 +1,4 @@
-package pl.gebickionline.services.pricelist;
+package pl.gebickionline.pricelist;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class Group {
                 : unmodifiableList(services);
     }
 
-    public void addService(pl.gebickionline.services.Service s) {
+    public void addService(pl.gebickionline.communication.Service s) {
         if (services == null)
             services = new ArrayList<>();
 

@@ -1,17 +1,16 @@
-package pl.gebickionline.services.pricelist;
+package pl.gebickionline.pricelist;
 
 import java.util.*;
 
 import static java.util.Collections.*;
 
 /**
- * Created by Łukasz on 2015-12-29.
+ * Created by Łukasz on 2016-01-02.
  */
-public class PriceList {
+public class ManageablePriceList {
+    private List<ManageableGroup> groups;
 
-    private List<Group> groups;
-
-    public PriceList(Collection<Group> groups) {
+    public ManageablePriceList(Collection<ManageableGroup> groups) {
         if (groups == null) {
             this.groups = new LinkedList<>();
             return;
@@ -21,13 +20,10 @@ public class PriceList {
         this.groups.sort((g1, g2) -> Long.valueOf(g1.ordinal()).compareTo(g2.ordinal()));
     }
 
-    public List<Group> asList() {
+    public List<ManageableGroup> asList() {
         return groups == null
                 ? emptyList()
                 : unmodifiableList(groups);
     }
 
-    public byte[] asPdf() {
-        return new PdfPriceList(asList()).toByteArray();
-    }
 }

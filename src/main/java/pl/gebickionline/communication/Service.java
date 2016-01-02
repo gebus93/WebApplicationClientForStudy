@@ -1,4 +1,4 @@
-package pl.gebickionline.services;
+package pl.gebickionline.communication;
 
 /**
  * Created by Łukasz on 2015-12-29.

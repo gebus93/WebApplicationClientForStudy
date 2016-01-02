@@ -1,4 +1,4 @@
-package pl.gebickionline.services.pricelist;
+package pl.gebickionline.pricelist;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;

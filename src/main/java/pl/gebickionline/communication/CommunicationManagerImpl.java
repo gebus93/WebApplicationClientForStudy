@@ -6,7 +6,6 @@ import pl.gebickionline.config.Configuration;
 import pl.gebickionline.exception.*;
 import pl.gebickionline.restclient.*;
 import pl.gebickionline.security.AuthorizationCleaner;
-import pl.gebickionline.services.*;
 
 import java.util.*;
 

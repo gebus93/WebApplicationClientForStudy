@@ -1,7 +1,6 @@
 package pl.gebickionline.communication;
 
 import org.jetbrains.annotations.NotNull;
-import pl.gebickionline.services.*;
 
 import java.util.List;
 

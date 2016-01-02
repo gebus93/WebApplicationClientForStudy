@@ -21,7 +21,6 @@ public class AuthorizationProvider {
     }
 
     public void login(@NotNull String username, @NotNull String password) {
-        System.out.printf("login: %s\nPassword: %s\n", username, password);
 
         if (username.trim().isEmpty() || password.trim().isEmpty())
             throw new IllegalArgumentException("username cannot be empty");

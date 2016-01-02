@@ -1,4 +1,4 @@
-package pl.gebickionline.services.pricelist;
+package pl.gebickionline.pricelist;
 
 /**
  * Created by Łukasz on 2015-12-29.
@@ -10,7 +10,7 @@ public class Service {
     private Long maxPrice;
     private long ordinal;
 
-    public Service(pl.gebickionline.services.Service s) {
+    public Service(pl.gebickionline.communication.Service s) {
         serviceName = s.serviceName();
         ordinal = s.ordinal();
         price = s.price();
