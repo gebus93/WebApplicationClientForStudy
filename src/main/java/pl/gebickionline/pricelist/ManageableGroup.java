@@ -9,13 +9,15 @@ import static java.util.Collections.*;
  */
 public class ManageableGroup {
     private Long id;
+    private boolean visible;
     private String groupName;
     private long ordinal;
     private List<ManageableService> services;
 
-    public ManageableGroup(Long id, String groupName, long ordinal) {
+    public ManageableGroup(Long id, String groupName, boolean visible, long ordinal) {
         this.id = id;
         this.groupName = groupName;
+        this.visible = visible;
         this.ordinal = ordinal;
     }
 
@@ -57,5 +59,13 @@ public class ManageableGroup {
                 ", ordinal=" + ordinal +
                 ", services=" + services() +
                 '}';
+    }
+
+    public boolean visible() {
+        return visible;
+    }
+
+    public void id(Long id) {
+        this.id = id;
     }
 }

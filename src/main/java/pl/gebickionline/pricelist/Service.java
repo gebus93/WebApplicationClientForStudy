@@ -4,11 +4,11 @@ package pl.gebickionline.pricelist;
  * Created by Łukasz on 2015-12-29.
  */
 public class Service {
-    private String serviceName;
-    private Long price;
-    private Long minPrice;
-    private Long maxPrice;
-    private long ordinal;
+    protected String serviceName;
+    protected Long price;
+    protected Long minPrice;
+    protected Long maxPrice;
+    protected long ordinal;
 
     public Service(pl.gebickionline.communication.Service s) {
         serviceName = s.serviceName();
@@ -16,6 +16,9 @@ public class Service {
         price = s.price();
         minPrice = s.minPrice();
         maxPrice = s.maxPrice();
+    }
+
+    protected Service() {
     }
 
     public Long maxPrice() {

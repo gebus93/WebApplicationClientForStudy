@@ -66,6 +66,21 @@ public class Service {
         private Long ordinal;
         private Long groupID;
 
+        public Builder() {
+        }
+
+        public Builder(Service s) {
+            this.id = s.id;
+            this.visible = s.visible;
+            this.serviceName = s.serviceName;
+            this.price = s.price;
+            this.minPrice = s.minPrice;
+            this.maxPrice = s.maxPrice;
+            this.ordinal = s.ordinal;
+            this.groupID = s.groupID;
+        }
+
+
         public Builder withId(Long id) {
             this.id = id;
             return this;
