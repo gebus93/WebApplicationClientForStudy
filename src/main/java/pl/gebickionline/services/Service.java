@@ -4,6 +4,8 @@ package pl.gebickionline.services;
  * Created by Łukasz on 2015-12-29.
  */
 public class Service {
+    private final Long id;
+    private final Boolean visible;
     private final String serviceName;
     private final Long price;
     private final Long minPrice;
@@ -18,6 +20,8 @@ public class Service {
         this.maxPrice = builder.maxPrice;
         this.ordinal = builder.ordinal;
         this.groupID = builder.groupID;
+        this.id = builder.id;
+        this.visible = builder.visible;
     }
 
     public Long maxPrice() {
@@ -44,13 +48,33 @@ public class Service {
         return serviceName;
     }
 
+    public Long id() {
+        return id;
+    }
+
+    public Boolean visible() {
+        return visible;
+    }
+
     public static class Builder {
+        private Long id;
+        private Boolean visible;
         private String serviceName;
         private Long price;
         private Long minPrice;
         private Long maxPrice;
         private Long ordinal;
         private Long groupID;
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withVisible(Boolean visible) {
+            this.visible = visible;
+            return this;
+        }
 
         public Builder withServiceName(String serviceName) {
             this.serviceName = serviceName;

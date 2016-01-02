@@ -37,4 +37,11 @@ public class ServiceManager {
                 .forEach(s -> groups.get(s.groupID()).addService(s));
         return new PriceList(groups.values());
     }
+
+
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("test.pdf");
+        fos.write(getInstance().priceList().asPdf());
+        fos.close();
+    }
 }

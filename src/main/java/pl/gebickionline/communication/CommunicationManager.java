@@ -30,4 +30,12 @@ public interface CommunicationManager {
     List<Group> getVisibleGroups();
 
     List<Service> getVisibleServices();
+
+    void updateGroupList(List<Group> groups);
+
+    void updateServiceList(List<Service> services);
+
+    List<Group> getGroups();
+
+    List<Service> getServices();
 }

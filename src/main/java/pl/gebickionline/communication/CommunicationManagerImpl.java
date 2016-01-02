@@ -1,7 +1,7 @@
 package pl.gebickionline.communication;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
+import org.json.*;
 import pl.gebickionline.config.Configuration;
 import pl.gebickionline.exception.*;
 import pl.gebickionline.restclient.*;
@@ -9,7 +9,8 @@ import pl.gebickionline.security.AuthorizationCleaner;
 import pl.gebickionline.services.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Łukasz on 2015-11-28.
@@ -123,18 +124,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                         .toString())
                 .send();
 
-        switch (response.statusCode()) {
-            case 200:
-                return;
-            case 400:
-            case 404:
-                List<String> errors = response.asJsonObject().getList("errors").asStringList();
-                throw new BadRequestException(errors);
-            case 401:
-                throw new AuthorizationException();
-            default:
-                throw new RemoteServerError();
-        }
+        assertModifiedItemResponse(response, response.statusCode());
     }
 
     @Override
@@ -178,7 +168,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                                 .withCreationTime(n.getString("creationTime"))
                                 .withLastUpdateTime(n.getString("lastUpdateTime"))
                                 .build())
-                        .collect(Collectors.toList());
+                        .collect(toList());
             case 401:
                 throw new AuthorizationException();
             default:
@@ -195,18 +185,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                 .header("Cookie", cookieWithSessionId.orElse(""))
                 .send();
 
-        assertNewsVisibilityStatusCode(response.statusCode());
-    }
-
-    private void assertNewsVisibilityStatusCode(int statusCode) {
-        switch (statusCode) {
-            case 200:
-                return;
-            case 401:
-                throw new AuthorizationException();
-            default:
-                throw new RemoteServerError();
-        }
+        assertSimpleStatusCode(response.statusCode());
     }
 
     @Override
@@ -218,7 +197,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                 .header("Cookie", cookieWithSessionId.orElse(""))
                 .send();
 
-        assertNewsVisibilityStatusCode(response.statusCode());
+        assertSimpleStatusCode(response.statusCode());
     }
 
     @Override
@@ -251,7 +230,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
 
         return response.asList().asObjectList().stream()
                 .map(g -> new Group(g.getLong("id"), g.getString("name"), g.getLong("ordinal")))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
@@ -274,7 +253,104 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                         .withMaxPrice(s.getLong("maxPrice"))
                         .withMinPrice(s.getLong("minPrice"))
                         .build()
-                ).collect(Collectors.toList());
+                ).collect(toList());
+
+    }
+
+    @Override
+    public void updateGroupList(List<Group> groups) {
+        final List<Object> jsonObjectList = groups.stream()
+                .map(group -> new JSONObject()
+                        .put("id", group.id())
+                        .put("name", group.groupName())
+                        .put("visible", group.visible())
+                        .put("ordinal", group.ordinal())
+                )
+                .collect(toList());
+
+        Response response = RestClient
+                .post(configuration.applicationUrl() + "admin/service/group")
+                .header("application", configuration.applicationAuthToken())
+                .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .header("content-type", "application/json")
+                .body(new JSONArray(jsonObjectList).toString())
+                .send();
+
+        assertModifiedItemResponse(response, response.statusCode());
+    }
+
+    @Override
+    public void updateServiceList(List<Service> services) {
+        final List<Object> jsonObjectList = services.stream()
+                .map(service -> new JSONObject()
+                        .put("id", service.id())
+                        .put("ordinal", service.ordinal())
+                        .put("name", service.serviceName())
+                        .put("price", service.price())
+                        .put("minPrice", service.minPrice())
+                        .put("maxPrice", service.maxPrice())
+                        .put("visible", service.visible())
+                        .put("groupID", service.groupID())
+                )
+                .collect(toList());
+
+        Response response = RestClient
+                .post(configuration.applicationUrl() + "admin/service")
+                .header("application", configuration.applicationAuthToken())
+                .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .header("content-type", "application/json")
+                .body(new JSONArray(jsonObjectList).toString())
+                .send();
+
+        assertModifiedItemResponse(response, response.statusCode());
+    }
+
+    @Override
+    public List<Group> getGroups() {
+        Response response = RestClient
+                .get(configuration.applicationUrl() + "admin/service/group")
+                .header("application", configuration.applicationAuthToken())
+                .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .send();
+
+        assertSimpleStatusCode(response.statusCode());
+
+        return response.asList().asObjectList().stream()
+                .map(g -> new Group.Builder()
+                        .withId(g.getLong("id"))
+                        .withGroupName(g.getString("name"))
+                        .withOrdinal(g.getLong("ordinal"))
+                        .withVisible(g.getBoolean("visible"))
+                        .build())
+                .collect(toList());
+    }
+
+    @Override
+    public List<Service> getServices() {
+        Response response = RestClient
+                .get(configuration.applicationUrl() + "admin/service")
+                .header("application", configuration.applicationAuthToken())
+                .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .send();
+
+        assertSimpleStatusCode(response.statusCode());
+
+        return response.asList().asObjectList().stream()
+                .map(g -> new Service.Builder()
+                        .withId(g.getLong("id"))
+                        .withServiceName(g.getString("name"))
+                        .withOrdinal(g.getLong("ordinal"))
+                        .withVisible(g.getBoolean("visible"))
+                        .withPrice(g.getLong("price"))
+                        .withMinPrice(g.getLong("minPrice"))
+                        .withMaxPrice(g.getLong("maxPrice"))
+                        .withGroupID(g.getLong("groupID"))
+                        .build())
+                .collect(toList());
 
     }
 
@@ -282,5 +358,31 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
     public void clearAuthorizationData() {
         authToken = Optional.empty();
         cookieWithSessionId = Optional.empty();
+    }
+
+    private void assertSimpleStatusCode(int statusCode) {
+        switch (statusCode) {
+            case 200:
+                return;
+            case 401:
+                throw new AuthorizationException();
+            default:
+                throw new RemoteServerError();
+        }
+    }
+
+    private void assertModifiedItemResponse(Response response, int statusCode) {
+        switch (statusCode) {
+            case 200:
+                return;
+            case 400:
+            case 404:
+                List<String> errors = response.asJsonObject().getList("errors").asStringList();
+                throw new BadRequestException(errors);
+            case 401:
+                throw new AuthorizationException();
+            default:
+                throw new RemoteServerError();
+        }
     }
 }
