@@ -37,7 +37,11 @@
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.fxml</include>
+                    <include>**/*.css</include>
+                </includes>
             </resource>
         </resources>
 
