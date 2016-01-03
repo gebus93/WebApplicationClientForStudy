@@ -1,6 +1,8 @@
 package pl.gebickionline.ui.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
+import pl.gebickionline.security.AuthorizationProvider;
 import pl.gebickionline.ui.Main;
 
 /**
@@ -8,6 +10,11 @@ import pl.gebickionline.ui.Main;
  */
 public class MainWindowController {
     private Main mainApp;
+
+    @FXML
+    private MenuItem loginMenuItem;
+    @FXML
+    private MenuItem logoutMenuItem;
 
     public void setMainApp(Main mainApp) {
         this.mainApp = mainApp;
@@ -18,4 +25,28 @@ public class MainWindowController {
         System.exit(0);
     }
 
+    @FXML
+    private void logout() {
+        AuthorizationProvider authorizationProvider = AuthorizationProvider.getInstance();
+        if (authorizationProvider.isLoggedIn())
+            authorizationProvider.logout();
+
+        changeAuthorizationMenuText();
+        mainApp.showHomeView();
+    }
+
+    @FXML
+    private void login() {
+        mainApp.showLoginForm(this);
+    }
+
+    public void changeAuthorizationMenuText() {
+        if (AuthorizationProvider.getInstance().isLoggedIn()) {
+            loginMenuItem.setVisible(false);
+            logoutMenuItem.setVisible(true);
+        } else {
+            loginMenuItem.setVisible(true);
+            logoutMenuItem.setVisible(false);
+        }
+    }
 }

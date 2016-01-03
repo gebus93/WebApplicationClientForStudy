@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gebickionline.ui.controller.LoginController">
+   <children>
+      <Label alignment="TOP_LEFT" layoutX="44.0" layoutY="24.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="92.0" prefWidth="712.0" text="e-Firma" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" AnchorPane.bottomAnchor="484.0" AnchorPane.leftAnchor="44.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="24.0">
+         <font>
+            <Font name="System Bold" size="60.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_LEFT" layoutX="91.0" layoutY="110.0" prefHeight="39.0" prefWidth="478.0" text="Panel administracyjny">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
+      <Line endX="608.0" layoutX="145.0" layoutY="100.0" startX="-98.0" stroke="#333333" />
+      <Label alignment="CENTER" layoutX="125.0" layoutY="229.0" prefHeight="35.0" prefWidth="512.0" text="Aby się zalogować, naciśnij CTRL + L,">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="135.0" layoutY="269.0" prefHeight="32.0" prefWidth="493.0" text="lub wybierz opcję &quot;Zaloguj&quot; z menu &quot;Plik&quot;.">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

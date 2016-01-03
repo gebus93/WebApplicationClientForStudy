@@ -75,6 +75,7 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
         switch (response.statusCode()) {
             case 200:
                 authToken = Optional.empty();
+                break;
             case 401:
                 throw new AuthorizationException();
             default:

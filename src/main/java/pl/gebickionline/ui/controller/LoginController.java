@@ -2,6 +2,7 @@ package pl.gebickionline.ui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import pl.gebickionline.security.AuthorizationProvider;
 import pl.gebickionline.ui.Main;
 
@@ -15,6 +16,8 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
     private Main mainApp;
+    private MainWindowController mainWindowController;
+    private Stage dialogStage;
     private AuthorizationProvider authorizationProvider;
 
     @FXML
@@ -34,7 +37,9 @@ public class LoginController {
         authorizationProvider.login(usernameField.getText(), passwordField.getText());
 
         if (authorizationProvider.isLoggedIn()) {
+            mainWindowController.changeAuthorizationMenuText();
             mainApp.showMainView();
+            dialogStage.close();
         } else {
             showErrorAlert("Autoryzacja nie powiodła się.\nNajprawdopodobniej podana nazwa użytkownika, lub hasło są błędne.\nProszę spróbować ponownie.");
         }
@@ -49,7 +54,9 @@ public class LoginController {
         alert.showAndWait();
     }
 
-    public void setMainApp(Main mainApp) {
+    public void addReferences(Main mainApp, MainWindowController mainWindowController, Stage dialogStage) {
         this.mainApp = mainApp;
+        this.mainWindowController = mainWindowController;
+        this.dialogStage = dialogStage;
     }
 }
