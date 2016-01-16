@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.jetbrains.annotations.NotNull;
-import pl.gebickionline.exception.ExceptionHandler;
+import pl.gebickionline.ui.exception.ExceptionHandler;
 import pl.gebickionline.ui.controller.*;
 
 import java.io.IOException;
@@ -47,8 +47,19 @@ public class Main extends Application {
 
     }
 
-    private void changeView(Pane view) {
+
+    public void changeView(Pane view) {
         rootLayout.setCenter(view);
+    }
+
+    public void changeView(String viewName) {
+
+        @NotNull FXMLLoader loader = getFxmlLoader(viewName);
+        try {
+            changeView(loader.<BorderPane>load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void showLoginForm() {
@@ -113,7 +124,7 @@ public class Main extends Application {
     }
 
     @NotNull
-    private FXMLLoader getFxmlLoader(String viewName) {
+    public FXMLLoader getFxmlLoader(String viewName) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/" + viewName + ".fxml"));
         return loader;

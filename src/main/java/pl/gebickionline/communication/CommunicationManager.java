@@ -37,4 +37,8 @@ public interface CommunicationManager {
     List<Group> getGroups();
 
     List<Service> getServices();
+
+    String getContentOfContactDataPage();
+
+    void updateContentOfContactDataPage(String newContactData);
 }

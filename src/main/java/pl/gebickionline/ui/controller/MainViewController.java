@@ -26,7 +26,7 @@ public class MainViewController {
 
     @FXML
     private void goToContactManagement() {
-        showAlert("Dane kontaktowe");
+        mainApp.changeView("ContactDataEditor");
     }
 
     private void showAlert(String pageName) {

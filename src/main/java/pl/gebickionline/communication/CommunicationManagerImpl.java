@@ -355,6 +355,41 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
     }
 
     @Override
+    public String getContentOfContactDataPage() {
+        Response response = RestClient
+                .get(configuration.applicationUrl() + "contact")
+                .header("application", configuration.applicationAuthToken())
+                .send();
+
+        switch (response.statusCode()) {
+            case 200:
+                return response.asJsonObject().getString("content");
+            default:
+                throw new RemoteServerError();
+        }
+
+    }
+
+    @Override
+    public void updateContentOfContactDataPage(String newContactData) {
+        Response response = RestClient
+                .post(configuration.applicationUrl() + "admin/contact")
+                .header("content-type", "application/json")
+                .header("application", configuration.applicationAuthToken())
+                .header("auth_token", authToken.orElse(""))
+                .header("Cookie", cookieWithSessionId.orElse(""))
+                .body(
+                        new JSONObject()
+                                .put("content", newContactData)
+                                .toString()
+                )
+                .send();
+
+        assertSimpleStatusCode(response.statusCode());
+
+    }
+
+    @Override
     public void clearAuthorizationData() {
         authToken = Optional.empty();
         cookieWithSessionId = Optional.empty();

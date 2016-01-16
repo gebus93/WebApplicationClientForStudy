@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.HTMLEditor?>
+<BorderPane fx:id="rootLayout" minHeight="600.0" minWidth="800.0" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pl.gebickionline.ui.controller.ContactDataEditorController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" prefHeight="39.0" text="Edycja danych kontaktowych">
+                    <font>
+                        <Font size="36.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </Label>
+            </children>
+            <padding>
+                <Insets bottom="25.0" left="50.0" right="50.0" top="25.0"/>
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <HTMLEditor onKeyReleased="#textChanged" fx:id="editorField" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
+                    prefHeight="200.0" prefWidth="506.0" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <buttons>
+                <Button onMouseClicked="#saveChanges" mnemonicParsing="false" text="Zapisz"/>
+                <Button onMouseClicked="#resetChanges" mnemonicParsing="false" text="Porzuć zmiany"/>
+            </buttons>
+            <padding>
+                <Insets bottom="11.0" right="25.0" top="10.0"/>
+            </padding>
+        </ButtonBar>
+    </bottom>
+</BorderPane>
