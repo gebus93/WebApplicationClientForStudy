@@ -2,6 +2,7 @@ package pl.gebickionline.ui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.stage.Stage;
 import pl.gebickionline.security.AuthorizationProvider;
 import pl.gebickionline.ui.Main;
@@ -23,6 +24,12 @@ public class LoginController {
     @FXML
     private void initialize() {
         authorizationProvider = AuthorizationProvider.getInstance();
+    }
+
+    @FXML
+    private void invokeLoginAction(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER))
+            logIn();
     }
 
     @FXML

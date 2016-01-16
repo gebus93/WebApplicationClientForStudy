@@ -35,9 +35,10 @@ public class MainWindowController {
         mainApp.showHomeView();
     }
 
+
     @FXML
     private void login() {
-        mainApp.showLoginForm(this);
+        mainApp.showLoginForm();
     }
 
     public void changeAuthorizationMenuText() {

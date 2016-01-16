@@ -3,7 +3,6 @@ package pl.gebickionline.pricelist;
 import pl.gebickionline.communication.*;
 import pl.gebickionline.communication.Service;
 
-import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 

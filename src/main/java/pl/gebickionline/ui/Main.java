@@ -3,12 +3,10 @@ package pl.gebickionline.ui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.jetbrains.annotations.NotNull;
-import pl.gebickionline.exception.AuthorizationException;
-import pl.gebickionline.restclient.ExecuteRequestException;
+import pl.gebickionline.exception.ExceptionHandler;
 import pl.gebickionline.ui.controller.*;
 
 import java.io.IOException;
@@ -26,20 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Thread
                 .currentThread()
-                .setUncaughtExceptionHandler((thread, throwable) -> {
-                    if (throwable.getCause() != null && throwable.getCause().getCause() != null) {
-                        if (throwable.getCause().getCause() instanceof ExecuteRequestException) {
-                            showConnectionErrorAlert();
-                            return;
-                        } else if (throwable.getCause().getCause() instanceof AuthorizationException) {
-                            showAuthorizationErrorAlert();
-                            showLoginForm(mainWindowController);
-                            return;
-                        }
-                    }
-
-                    throwable.printStackTrace();
-                });
+                .setUncaughtExceptionHandler(new ExceptionHandler(this));
 
 
         this.primaryStage = primaryStage;
@@ -50,24 +35,28 @@ public class Main extends Application {
     }
 
     public void showHomeView() {
-        @NotNull FXMLLoader loader = getFxmlLoader("Home");
-        AnchorPane homeView;
+        @NotNull FXMLLoader loader = getFxmlLoader("HomeNew");
+        BorderPane homeView;
         try {
-            homeView = (AnchorPane) loader.load();
+            homeView = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        rootLayout.setCenter(homeView);
+        changeView(homeView);
 
     }
 
-    public void showLoginForm(MainWindowController mainWindowController) {
+    private void changeView(Pane view) {
+        rootLayout.setCenter(view);
+    }
+
+    public void showLoginForm() {
 
         FXMLLoader loader = getFxmlLoader("Login");
         AnchorPane login;
         try {
-            login = (AnchorPane) loader.load();
+            login = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +75,7 @@ public class Main extends Application {
     public void initRootLayout() {
         FXMLLoader loader = getFxmlLoader("MainWindow");
         try {
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -107,40 +96,15 @@ public class Main extends Application {
         launch(args);
     }
 
-    private void showConnectionErrorAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.initOwner(primaryStage);
-        alert.setTitle("Wystąpił nieoczekiwany błąd!");
-        alert.setHeaderText("Błąd połączenia z serwerem!");
-        alert.setContentText("Nastąpił nieoczekiwany błąd, podczas próby nawiązania połączenia z serwerem.\nSprawdź połączenie z internetem, lub upewnij się, że serwer jest uruchomiony.");
-        alert.showAndWait();
-    }
-
-    private void showAuthorizationErrorAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.initOwner(primaryStage);
-        alert.setTitle("Wystąpił nieoczekiwany błąd!");
-        alert.setHeaderText("Brak wymaganych uprawnień!");
-        alert.setContentText("Nie posiadasz wystarczających uprawnień, aby uzyskać dostęp do wybranej metody.\n\nProszę się zalogować.");
-        alert.showAndWait();
-    }
 
     public void showMainView() {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(primaryStage);
-        alert.setTitle("Podsumowanie autoryzacji!");
-        alert.setHeaderText("Zalogowano");
-        alert.setContentText("Logowanie powiodło się");
-        alert.showAndWait();
-
-        //------
-
         try {
-            FXMLLoader loader = getFxmlLoader("NewService");
-            AnchorPane login = (AnchorPane) loader.load();
-
-            rootLayout.setCenter(login);
+            FXMLLoader loader = getFxmlLoader("MainView");
+            BorderPane view = loader.load();
+            MainViewController controller = loader.getController();
+            controller.setMainApp(this);
+            changeView(view);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
