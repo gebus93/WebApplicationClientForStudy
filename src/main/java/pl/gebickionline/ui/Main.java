@@ -35,7 +35,7 @@ public class Main extends Application {
     }
 
     public void showHomeView() {
-        @NotNull FXMLLoader loader = getFxmlLoader("HomeNew");
+        @NotNull FXMLLoader loader = getFxmlLoader("Home");
         BorderPane homeView;
         try {
             homeView = loader.load();
