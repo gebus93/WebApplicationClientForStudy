@@ -21,7 +21,7 @@ public class MainViewController {
 
     @FXML
     private void goToPriceListManagement() {
-        showAlert("Cennik");
+        mainApp.changeView("PriceListViewer");
     }
 
     @FXML

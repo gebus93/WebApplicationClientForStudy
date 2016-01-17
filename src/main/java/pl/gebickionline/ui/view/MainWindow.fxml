@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@MainWindow.css" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gebickionline.ui.controller.MainWindowController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Plik">
-               <items>
-                  <MenuItem fx:id="loginMenuItem" mnemonicParsing="false" onAction="#login" text="Zaloguj">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#logout" text="Wyloguj" visible="false">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Zamknij program">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
+    <top>
+        <VBox>
+            <MenuBar BorderPane.alignment="CENTER">
+                <menus>
+                    <Menu mnemonicParsing="false" text="Plik">
+                        <items>
+                            <MenuItem fx:id="loginMenuItem" mnemonicParsing="false" onAction="#login" text="Zaloguj">
+                                <accelerator>
+                                    <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                </accelerator>
+                            </MenuItem>
+                            <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#logout" text="Wyloguj" visible="false">
+                                <accelerator>
+                                    <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                </accelerator>
+                            </MenuItem>
+                            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Zamknij program">
+                                <accelerator>
+                                    <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                </accelerator>
+                            </MenuItem>
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+        </VBox>
+    </top>
 </BorderPane>
