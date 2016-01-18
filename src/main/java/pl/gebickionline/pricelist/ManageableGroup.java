@@ -21,6 +21,10 @@ public class ManageableGroup {
         this.ordinal = ordinal;
     }
 
+    public ManageableGroup() {
+
+    }
+
     public String groupName() {
         return groupName;
     }
@@ -53,12 +57,7 @@ public class ManageableGroup {
 
     @Override
     public String toString() {
-        return "ManageableGroup{" +
-                "id=" + id +
-                ", groupName='" + groupName + '\'' +
-                ", ordinal=" + ordinal +
-                ", services=" + services() +
-                '}';
+        return groupName();
     }
 
     public boolean visible() {
@@ -67,5 +66,9 @@ public class ManageableGroup {
 
     public void id(Long id) {
         this.id = id;
+    }
+
+    public void ordinal(Long newOrdinal) {
+        this.ordinal = newOrdinal;
     }
 }

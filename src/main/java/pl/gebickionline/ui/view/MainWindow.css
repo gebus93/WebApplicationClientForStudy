@@ -30,7 +30,7 @@
     -fx-padding: 5px 10px 5px 0px;
 }
 
-.pricelist-item-selected {
+.pricelist-item-selected, .pricelist-item-selected * {
     -fx-background-color: #a00;
     -fx-text-fill: #ffffff;
 }

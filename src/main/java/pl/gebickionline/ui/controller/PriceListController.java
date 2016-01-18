@@ -13,18 +13,19 @@ import java.util.List;
  * Created by Łukasz on 2016-01-17.
  */
 public class PriceListController {
-    public PriceListManagerVBox priceListManagerBox = new PriceListManagerVBox();
-
     @FXML
     public SplitPane splitPane;
 
     private PriceListContainerVBox priceListContainer = new PriceListContainerVBox();
-    private ObservableList<ManageableGroup> groups;
 
+    private ObservableList<ManageableGroup> groups;
+    public PriceListManagerVBox priceListManagerBox;
 
     @FXML
     private void initialize() {
+        groups = FXCollections.observableArrayList();
 
+        priceListManagerBox = new PriceListManagerVBox(groups);
         splitPane.getItems().addAll(
                 priceListContainer.getWrappedByScrollPane(),
                 priceListManagerBox
@@ -33,7 +34,6 @@ public class PriceListController {
 
         ManageablePriceList manageablePriceList = PriceListManager.getInstance().manageablePriceList();
 
-        groups = FXCollections.observableArrayList();
         groups.addListener((ListChangeListener) c -> updateGroupsContainer(c.getList()));
         changeGroupList(manageablePriceList.asList());
     }
@@ -41,10 +41,11 @@ public class PriceListController {
     private void changeGroupList(List<ManageableGroup> manageableGroups) {
         groups.clear();
         groups.addAll(manageableGroups);
+        groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
     }
 
     private void updateGroupsContainer(List<ManageableGroup> list) {
-        priceListContainer.getChildren().removeAll();
+        priceListContainer.clear();
         list.forEach(this::addGroupToView);
     }
 

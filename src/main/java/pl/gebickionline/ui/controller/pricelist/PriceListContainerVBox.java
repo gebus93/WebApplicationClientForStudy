@@ -65,4 +65,8 @@ public class PriceListContainerVBox extends VBox {
         priceListScrollPane.setFitToWidth(true);
         return priceListScrollPane;
     }
+
+    public void clear() {
+        getChildren().clear();
+    }
 }
