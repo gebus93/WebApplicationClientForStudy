@@ -12,6 +12,9 @@ public class PriceListContainerVBox extends VBox {
     private static final String ITEM_SELECTED_CLASS = "pricelist-item-selected";
     private Node selectedNode;
 
+    public enum SelectionType {SELECTED, UNSELECTED}
+
+
     public PriceListContainerVBox() {
         super();
 
@@ -49,13 +52,16 @@ public class PriceListContainerVBox extends VBox {
                 .forEach(n -> n.getStyleClass().remove(ITEM_SELECTED_CLASS));
     }
 
-    public void changeSelectedItem(Node node) {
+    public SelectionType changeSelectedItem(Node node) {
         removeSelectionFromAllElements();
         if (selectedNode != node) {
             selectedNode = node;
             selectedNode.getStyleClass().add(ITEM_SELECTED_CLASS);
-        } else
-            selectedNode = null;
+            return SelectionType.SELECTED;
+        }
+
+        selectedNode = null;
+        return SelectionType.UNSELECTED;
     }
 
     public ScrollPane getWrappedByScrollPane() {

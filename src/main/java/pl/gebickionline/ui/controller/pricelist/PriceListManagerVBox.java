@@ -4,8 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import org.jetbrains.annotations.NotNull;
 import pl.gebickionline.pricelist.*;
+import pl.gebickionline.ui.controller.pricelist.control.*;
 
 import java.io.*;
 import java.util.Optional;
@@ -15,20 +15,26 @@ import java.util.Optional;
  */
 public class PriceListManagerVBox extends VBox {
     private final ObservableList<ManageableGroup> groups;
+    private Optional<VBox> managementMenu = Optional.empty();
 
     public PriceListManagerVBox(ObservableList<ManageableGroup> groups) {
         super();
         this.groups = groups;
         getStyleClass().addAll("pricelist-wrapper");
 
-        Label createNewGroup = createLabelButton("Dodaj grupę usług");
-        Label createNewService = createLabelButton("Dodaj usługę");
-        Label generatePriceList = createLabelButton("Generuj cennik (PDF)");
+        Label createNewGroup = new LabelButton("Dodaj grupę usług");
+        Label createNewService = new LabelButton("Dodaj usługę");
+        Label generatePriceList = new LabelButton("Generuj cennik (PDF)");
 
         createNewGroup.setOnMouseClicked(event -> showCreateGroupDialog());
         generatePriceList.setOnMouseClicked(event -> generatePriceList());
 
-        getChildren().addAll(createNewGroup, createNewService, generatePriceList);
+        getChildren().addAll(
+                new SideBarHeaderLabel("Opcje podstawowe"),
+                createNewGroup,
+                createNewService,
+                generatePriceList
+        );
     }
 
     private void showCreateGroupDialog() {
@@ -80,11 +86,18 @@ public class PriceListManagerVBox extends VBox {
         return Optional.ofNullable(file);
     }
 
-    @NotNull
-    private Label createLabelButton(String text) {
-        Label label = new Label(text);
-        label.getStyleClass().add("pricelist-label-button");
-        return label;
+    public void showManagementMenu(ManageableService service) {
+        if (managementMenu.isPresent())
+            hideManagementMenu();
+
+        managementMenu = Optional.of(new ServiceManagementMenuVBox(service));
+        getChildren().add(managementMenu.get());
     }
 
+    public void hideManagementMenu() {
+        if (!managementMenu.isPresent())
+            return;
+
+        getChildren().remove(managementMenu.get());
+    }
 }

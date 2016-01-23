@@ -9,6 +9,8 @@ import pl.gebickionline.ui.controller.pricelist.*;
 
 import java.util.List;
 
+import static pl.gebickionline.ui.controller.pricelist.PriceListContainerVBox.SelectionType.SELECTED;
+
 /**
  * Created by Łukasz on 2016-01-17.
  */
@@ -46,24 +48,35 @@ public class PriceListController {
 
     private void updateGroupsContainer(List<ManageableGroup> list) {
         priceListContainer.clear();
-        list.forEach(this::addGroupToView);
+
+        list.stream()
+                .sorted((g1, g2) -> Long.valueOf(g1.ordinal()).compareTo(g2.ordinal()))
+                .forEachOrdered(this::addGroupToView);
     }
 
     private void addGroupToView(ManageableGroup group) {
         Label groupNameLabel = priceListContainer.addGroup(group.groupName());
         groupNameLabel.setOnMouseClicked(event -> changeSelectedGroup(groupNameLabel, group.id()));
 
-        group.services().forEach(this::addServiceToView);
+        group.services()
+                .stream()
+                .sorted((s1, s2) -> Long.valueOf(s1.ordinal()).compareTo(s2.ordinal()))
+                .forEachOrdered(this::addServiceToView);
     }
 
     private void addServiceToView(ManageableService service) {
         HBox serviceBox = priceListContainer.addService(service);
-        serviceBox.setOnMouseClicked(event -> changeSelectedService(serviceBox, service.id()));
+        serviceBox.setOnMouseClicked(event -> changeSelectedService(serviceBox, service));
 
     }
 
-    private void changeSelectedService(HBox serviceBox, Long serviceId) {
-        priceListContainer.changeSelectedItem(serviceBox);
+    private void changeSelectedService(HBox serviceBox, ManageableService service) {
+        PriceListContainerVBox.SelectionType selectionType = priceListContainer.changeSelectedItem(serviceBox);
+
+        if (selectionType == SELECTED)
+            priceListManagerBox.showManagementMenu(service);
+        else
+            priceListManagerBox.hideManagementMenu();
 
     }
 
