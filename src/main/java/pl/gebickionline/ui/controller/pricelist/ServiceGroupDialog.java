@@ -1,6 +1,5 @@
 package pl.gebickionline.ui.controller.pricelist;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -20,10 +19,10 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
     private CheckBox visible = new CheckBox();
     private ChoiceBox<GroupOrder> location = new ChoiceBox<>();
 
-    public ServiceGroupDialog(ManageableGroup group, ObservableList<ManageableGroup> groups) {
+    public ServiceGroupDialog(ManageableGroup group) {
         super();
 
-        initializeLocationChoiceBox(group.ordinal(), groups);
+        initializeLocationChoiceBox(group.ordinal());
 
         getDialogPane().setContent(layout);
         getDialogPane().getButtonTypes().addAll(saveButtonType, cancel);
@@ -62,19 +61,21 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
 
     }
 
-    private void initializeLocationChoiceBox(long selectedIndex, ObservableList<ManageableGroup> groups) {
+    private void initializeLocationChoiceBox(long selectedIndex) {
         location.getItems().add(new GroupOrder(0, "Na początku"));
         location.getItems().addAll(
-                groups.stream()
+                PriceList.getInstance()
+                        .getGroupList()
+                        .stream()
+                        .sorted()
                         .map(g -> new GroupOrder(g.ordinal() + 1, "Po grupie \"" + g.groupName() + "\""))
-                        .sorted((g1, g2) -> Long.valueOf(g1.order).compareTo(g2.order))
                         .collect(toList())
         );
         location.getSelectionModel().select((int) selectedIndex);
     }
 
-    public ServiceGroupDialog(ObservableList<ManageableGroup> groups) {
-        this(new ManageableGroup(), groups);
+    public ServiceGroupDialog() {
+        this(new ManageableGroup());
     }
 
     private Label createLabel(String text) {

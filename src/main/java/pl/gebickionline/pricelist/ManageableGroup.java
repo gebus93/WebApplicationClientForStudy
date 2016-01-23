@@ -7,7 +7,7 @@ import static java.util.Collections.*;
 /**
  * Created by Łukasz on 2016-01-02.
  */
-public class ManageableGroup {
+public class ManageableGroup implements Comparable<ManageableGroup> {
     private Long id;
     private boolean visible;
     private String groupName;
@@ -70,5 +70,10 @@ public class ManageableGroup {
 
     public void ordinal(Long newOrdinal) {
         this.ordinal = newOrdinal;
+    }
+
+    @Override
+    public int compareTo(ManageableGroup o) {
+        return Long.valueOf(ordinal()).compareTo(o.ordinal());
     }
 }

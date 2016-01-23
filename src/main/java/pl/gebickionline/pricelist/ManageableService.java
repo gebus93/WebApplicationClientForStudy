@@ -3,7 +3,7 @@ package pl.gebickionline.pricelist;
 /**
  * Created by Łukasz on 2016-01-02.
  */
-public class ManageableService extends Service {
+public class ManageableService extends Service implements Comparable<ManageableService> {
     private Long id;
     private boolean visible;
 
@@ -42,6 +42,11 @@ public class ManageableService extends Service {
                 ", maxPrice=" + maxPrice() +
                 ", ordinal=" + ordinal() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ManageableService o) {
+        return Long.valueOf(ordinal()).compareTo(o.ordinal());
     }
 
     public static class Builder {

@@ -1,6 +1,5 @@
 package pl.gebickionline.ui.controller.pricelist;
 
-import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -14,12 +13,10 @@ import java.util.Optional;
  * Created by Łukasz on 2016-01-17.
  */
 public class PriceListManagerVBox extends VBox {
-    private final ObservableList<ManageableGroup> groups;
     private Optional<VBox> managementMenu = Optional.empty();
 
-    public PriceListManagerVBox(ObservableList<ManageableGroup> groups) {
+    public PriceListManagerVBox() {
         super();
-        this.groups = groups;
         getStyleClass().addAll("pricelist-wrapper");
 
         Label createNewGroup = new LabelButton("Dodaj grupę usług");
@@ -38,16 +35,16 @@ public class PriceListManagerVBox extends VBox {
     }
 
     private void showCreateGroupDialog() {
-        ServiceGroupDialog serviceGroupDialog = new ServiceGroupDialog(groups);
+        ServiceGroupDialog serviceGroupDialog = new ServiceGroupDialog();
         serviceGroupDialog.setTitle("Tworzenie nowej grupy usług");
         Optional<ManageableGroup> manageableGroup = serviceGroupDialog.showAndWait();
 
         if (manageableGroup.isPresent()) {
-            final Long[] newOrdinal = {1L};
-            ManageableGroup newGroup = manageableGroup.get();
-            groups.add((int) newGroup.ordinal(), newGroup);
-            groups.stream().forEachOrdered(g -> g.ordinal(newOrdinal[0]++));
-            PriceListManager.getInstance().updateManageablePriceList(new ManageablePriceList(groups));
+
+            PriceList priceList = PriceList.getInstance();
+            priceList.addGroup(manageableGroup.get());
+            PriceListManager.getInstance().updateManageablePriceList(priceList.asManageablePriceList());
+
         }
     }
 
