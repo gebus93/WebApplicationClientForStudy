@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import pl.gebickionline.exception.*;
 import pl.gebickionline.restclient.ExecuteRequestException;
 import pl.gebickionline.ui.Main;
+import pl.gebickionline.ui.controller.error.ErrorDialog;
 
 /**
  * Created by Łukasz on 2016-01-05.
@@ -35,7 +36,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
 
         realException.printStackTrace();
-        throw new RuntimeException(realException);
+        new ErrorDialog(realException).showAndWait();
     }
 
     private void showRemoteServerErrorAlert() {

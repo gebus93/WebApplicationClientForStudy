@@ -97,4 +97,13 @@ public class PriceListManagerVBox extends VBox {
 
         getChildren().remove(managementMenu.get());
     }
+
+    public void showManagementMenu(ManageableGroup group) {
+        if (managementMenu.isPresent())
+            hideManagementMenu();
+
+        managementMenu = Optional.of(new GroupManagementMenuVBox(group));
+        getChildren().add(managementMenu.get());
+
+    }
 }

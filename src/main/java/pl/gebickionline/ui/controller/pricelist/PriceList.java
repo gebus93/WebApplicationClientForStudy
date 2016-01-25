@@ -54,7 +54,7 @@ public class PriceList {
 
     private void addGroupToView(ManageableGroup group) {
         Label groupNameLabel = getPriceListContainerVBox().addGroup(group.groupName());
-        groupNameLabel.setOnMouseClicked(event -> changeSelectedGroup(groupNameLabel, group.id()));
+        groupNameLabel.setOnMouseClicked(event -> changeSelectedGroup(groupNameLabel, group));
 
         group.services()
                 .stream()
@@ -62,8 +62,13 @@ public class PriceList {
                 .forEachOrdered(this::addServiceToView);
     }
 
-    private void changeSelectedGroup(Label selectedGroupName, Long groupId) {
-        getPriceListContainerVBox().changeSelectedItem(selectedGroupName);
+    private void changeSelectedGroup(Label selectedGroupName, ManageableGroup group) {
+        PriceListContainerVBox.SelectionType selectionType = getPriceListContainerVBox().changeSelectedItem(selectedGroupName);
+
+        if (selectionType == SELECTED)
+            getPriceListController().showManagementMenu(group);
+        else
+            getPriceListController().hideManagementMenu();
     }
 
     private void addServiceToView(ManageableService service) {
@@ -73,8 +78,8 @@ public class PriceList {
 
     public void changeContent(List<ManageableGroup> manageableGroups) {
         groups.clear();
+        sortGroups();
         groups.addAll(manageableGroups);
-        groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
         PriceListManager.getInstance().updateManageablePriceList(asManageablePriceList());
 
     }
@@ -94,8 +99,8 @@ public class PriceList {
     }
 
     public void addGroup(ManageableGroup newGroup) {
-        final Long[] newOrdinal = {1L};
         groups.add((int) newGroup.ordinal(), newGroup);
+        final Long[] newOrdinal = {1L};
         groups.stream().forEachOrdered(g -> g.ordinal(newOrdinal[0]++));
     }
 
@@ -117,5 +122,28 @@ public class PriceList {
         ManageableGroup group = groupOptional.get();
         group.moveService(service, direction);
         changeContent(new ArrayList<>(groups));
+    }
+
+    public void moveGroup(ManageableGroup group, MovementDirection direction) {
+        long newOrdinal;
+        if (direction == UP) {
+            if (group.ordinal() == 1)
+                return;
+
+            newOrdinal = group.ordinal() - 1;
+        } else {
+            if (group.ordinal() == groups.size())
+                return;
+
+            newOrdinal = group.ordinal() + 1;
+        }
+
+        groups.get((int) newOrdinal - 1).ordinal(group.ordinal());
+        group.ordinal(newOrdinal);
+        changeContent(new ArrayList<>(groups));
+    }
+
+    private void sortGroups() {
+        groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
     }
 }

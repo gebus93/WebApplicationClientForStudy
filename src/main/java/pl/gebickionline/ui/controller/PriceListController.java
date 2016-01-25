@@ -45,4 +45,8 @@ public class PriceListController {
     public PriceListContainerVBox getPriceListContainer() {
         return priceListContainer;
     }
+
+    public void showManagementMenu(ManageableGroup group) {
+        priceListManagerBox.showManagementMenu(group);
+    }
 }
