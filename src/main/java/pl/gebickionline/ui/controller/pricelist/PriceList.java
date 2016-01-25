@@ -75,6 +75,7 @@ public class PriceList {
         groups.clear();
         groups.addAll(manageableGroups);
         groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
+        PriceListManager.getInstance().updateManageablePriceList(asManageablePriceList());
 
     }
 

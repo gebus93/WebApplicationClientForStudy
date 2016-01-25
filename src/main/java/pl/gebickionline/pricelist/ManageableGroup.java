@@ -41,9 +41,10 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
     }
 
     public List<ManageableService> services() {
-        return services == null
-                ? emptyList()
-                : Collections.unmodifiableList(services);
+        if (services == null) return emptyList();
+
+        sortServices();
+        return Collections.unmodifiableList(services);
     }
 
     public void addService(pl.gebickionline.communication.Service s) {
@@ -51,7 +52,6 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
             services = new ArrayList<>();
 
         services.add(new ManageableService(s));
-        sortServices();
     }
 
     public void services(List<ManageableService> services) {
