@@ -9,6 +9,7 @@ import pl.gebickionline.ui.controller.PriceListController;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
+import static pl.gebickionline.ui.controller.pricelist.MovementDirection.UP;
 import static pl.gebickionline.ui.controller.pricelist.PriceListContainerVBox.SelectionType.SELECTED;
 
 /**
@@ -105,4 +106,15 @@ public class PriceList {
         return groups.stream().sorted().collect(toList());
     }
 
+    public void moveService(ManageableService service, MovementDirection direction) {
+        Optional<ManageableGroup> groupOptional = groups.stream().filter(g -> g.services().contains(service)).findFirst();
+
+        if (!groupOptional.isPresent()) {
+            throw new RuntimeException("Grupa nie została znaleziona");
+        }
+
+        ManageableGroup group = groupOptional.get();
+        group.moveService(service, direction);
+        changeContent(new ArrayList<>(groups));
+    }
 }

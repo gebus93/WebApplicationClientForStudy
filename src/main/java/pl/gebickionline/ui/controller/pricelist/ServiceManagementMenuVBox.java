@@ -5,6 +5,8 @@ import javafx.scene.layout.VBox;
 import pl.gebickionline.pricelist.ManageableService;
 import pl.gebickionline.ui.controller.pricelist.control.*;
 
+import static pl.gebickionline.ui.controller.pricelist.MovementDirection.*;
+
 /**
  * Created by Łukasz on 2016-01-23.
  */
@@ -15,9 +17,21 @@ public class ServiceManagementMenuVBox extends VBox {
         add(headerLabel);
         add(new LabelButton("Edytuj usługę"));
         add(new LabelButton("Usuń usługę"));
-        add(new LabelButton("Przenieś o 1 do góry"));
-        add(new LabelButton("Przenieś o 1 w dół"));
+        LabelButton moveUp = new LabelButton("Przenieś o 1 do góry");
+        moveUp.setOnMouseClicked(event -> moveUp(service));
+        add(moveUp);
+        LabelButton moveDown = new LabelButton("Przenieś o 1 w dół");
+        moveDown.setOnMouseClicked(event -> moveDown(service));
+        add(moveDown);
 
+    }
+
+    private void moveDown(ManageableService service) {
+        PriceList.getInstance().moveService(service, DOWN);
+    }
+
+    private void moveUp(ManageableService service) {
+        PriceList.getInstance().moveService(service, UP);
     }
 
     private void add(Node node) {

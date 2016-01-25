@@ -49,6 +49,26 @@ public class ManageableService extends Service implements Comparable<ManageableS
         return Long.valueOf(ordinal()).compareTo(o.ordinal());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ManageableService that = (ManageableService) o;
+
+        return id.equals(that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    public void ordinal(long i) {
+        this.ordinal = i;
+    }
+
     public static class Builder {
         private Long id;
         private String serviceName;

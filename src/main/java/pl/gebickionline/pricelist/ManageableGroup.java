@@ -1,8 +1,11 @@
 package pl.gebickionline.pricelist;
 
+import pl.gebickionline.ui.controller.pricelist.MovementDirection;
+
 import java.util.*;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
+import static pl.gebickionline.ui.controller.pricelist.MovementDirection.*;
 
 /**
  * Created by Łukasz on 2016-01-02.
@@ -40,7 +43,7 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
     public List<ManageableService> services() {
         return services == null
                 ? emptyList()
-                : unmodifiableList(services);
+                : Collections.unmodifiableList(services);
     }
 
     public void addService(pl.gebickionline.communication.Service s) {
@@ -48,7 +51,7 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
             services = new ArrayList<>();
 
         services.add(new ManageableService(s));
-        services.sort((s1, s2) -> Long.valueOf(s1.ordinal()).compareTo(s2.ordinal()));
+        sortServices();
     }
 
     public void services(List<ManageableService> services) {
@@ -75,5 +78,32 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
     @Override
     public int compareTo(ManageableGroup o) {
         return Long.valueOf(ordinal()).compareTo(o.ordinal());
+    }
+
+    public void moveService(ManageableService service, MovementDirection direction) {
+        if (direction == UP) {
+            if (service.ordinal() == 1)
+                return;
+
+            long newOrdinal = service.ordinal() - 1;
+            services.get((int) newOrdinal - 1).ordinal++;
+            service.ordinal(newOrdinal);
+        }
+
+        if (direction == DOWN) {
+            if (service.ordinal() == services.size())
+                return;
+
+            long newOrdinal = service.ordinal() + 1;
+            services.get((int) newOrdinal - 1).ordinal--;
+            service.ordinal(newOrdinal);
+        }
+        sortServices();
+    }
+
+    private void sortServices() {
+        final Long[] newOrdinal = {1L};
+        services.stream().sorted().forEachOrdered(s -> s.ordinal(newOrdinal[0]++));
+        services.sort((s1, s2) -> Long.valueOf(s1.ordinal()).compareTo(s2.ordinal()));
     }
 }
