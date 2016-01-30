@@ -17,6 +17,7 @@ public class NavBar extends HBox {
     private final VBox homeButton;
     private final VBox logoutButton;
     private final VBox loginButton;
+    private final VBox exitButton;
 
     public NavBar() {
         getStyleClass().add("nav-bar");
@@ -28,6 +29,9 @@ public class NavBar extends HBox {
         setWidth(homeButton, NAV_BAR_HEIGHT);
         logoutButton = getButton("Wyloguj", "images/logout.png");
         loginButton = getButton("Zaloguj", "images/login.png");
+        exitButton = getButton("Zamknij program", "images/exit.png");
+        exitButton.setOnMouseClicked(event -> System.exit(0));
+        setWidth(exitButton, NAV_BAR_HEIGHT + 20);
     }
 
     private VBox getButton(String title, String iconPath) {
@@ -64,12 +68,12 @@ public class NavBar extends HBox {
 
     public void showMenuForUnauthorized() {
         getChildren().clear();
-        getChildren().add(loginButton);
+        getChildren().addAll(loginButton, exitButton);
     }
 
     public void showMenuForAuthorized() {
         getChildren().clear();
-        getChildren().addAll(homeButton, logoutButton);
+        getChildren().addAll(homeButton, logoutButton, exitButton);
     }
 
     public void addLoginAction(Runnable runnable) {
