@@ -68,7 +68,7 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
                         .getGroupList()
                         .stream()
                         .sorted()
-                        .map(g -> new GroupOrder(g.ordinal() + 1, "Po grupie \"" + g.groupName() + "\""))
+                        .map(g -> new GroupOrder(g.ordinal(), "Po grupie \"" + g.groupName() + "\""))
                         .collect(toList())
         );
         location.getSelectionModel().select((int) selectedIndex);

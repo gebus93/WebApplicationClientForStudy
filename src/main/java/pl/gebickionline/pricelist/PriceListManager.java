@@ -53,7 +53,7 @@ public class PriceListManager {
                 .collect(Collectors.toList());
 
         communicationManager.updateGroupList(newGroupList);
-        Map<Long, pl.gebickionline.communication.Group> updatedGroupList = communicationManager.getGroups().stream().collect(Collectors.toMap(g -> g.id(), g -> g));
+        Map<Long, pl.gebickionline.communication.Group> updatedGroupList = communicationManager.getGroups().stream().collect(Collectors.toMap(g -> g.ordinal(), g -> g));
 
         groups.stream()
                 .filter(g -> g.id() == null)
