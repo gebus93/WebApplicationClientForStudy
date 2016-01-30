@@ -57,7 +57,11 @@ public class PriceListManager {
 
         groups.stream()
                 .filter(g -> g.id() == null)
-                .forEach(g -> g.id(updatedGroupList.get(g.ordinal()).id()));
+                .forEach(g -> {
+                    Long newGroupId = updatedGroupList.get(g.ordinal()).id();
+                    g.id(newGroupId);
+                    g.services().forEach(s -> s.groupId(newGroupId));
+                });
 
         List<Service> newServiceList = groups.stream()
                 .collect(Collectors.toMap(g -> g.id(), g -> g.services()

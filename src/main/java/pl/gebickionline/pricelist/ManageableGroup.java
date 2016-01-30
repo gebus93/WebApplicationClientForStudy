@@ -106,4 +106,12 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
         services.stream().sorted().forEachOrdered(s -> s.ordinal(newOrdinal[0]++));
         services.sort((s1, s2) -> Long.valueOf(s1.ordinal()).compareTo(s2.ordinal()));
     }
+
+    public void addService(ManageableService manageableService) {
+        if (services == null)
+            services = new ArrayList<>();
+
+        services.add(manageableService);
+
+    }
 }

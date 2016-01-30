@@ -6,11 +6,13 @@ package pl.gebickionline.pricelist;
 public class ManageableService extends Service implements Comparable<ManageableService> {
     private Long id;
     private boolean visible;
+    private Long groupId;
 
     public ManageableService(pl.gebickionline.communication.Service s) {
         super(s);
         this.id = s.id();
         this.visible = s.visible();
+        this.groupId = s.groupID();
     }
 
     public ManageableService(Builder builder) {
@@ -21,6 +23,15 @@ public class ManageableService extends Service implements Comparable<ManageableS
         this.maxPrice = builder.maxPrice;
         this.ordinal = builder.ordinal;
         this.visible = builder.visible;
+        this.groupId = builder.groupId;
+    }
+
+    public Long groupId() {
+        return groupId;
+    }
+
+    public void groupId(long groupId) {
+        this.groupId = groupId;
     }
 
     public Long id() {
@@ -77,7 +88,13 @@ public class ManageableService extends Service implements Comparable<ManageableS
         private Long maxPrice;
         private long ordinal;
         private boolean visible;
+        private Long groupId;
 
+
+        public Builder withGroupId(Long groupId) {
+            this.groupId = groupId;
+            return this;
+        }
 
         public Builder withId(Long id) {
             this.id = id;

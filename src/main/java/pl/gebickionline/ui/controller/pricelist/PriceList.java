@@ -146,4 +146,14 @@ public class PriceList {
     private void sortGroups() {
         groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
     }
+
+    public void addService(ManageableService manageableService) {
+        groups.stream()
+                .filter(g -> Objects.equals(g.id(), manageableService.groupId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"))
+                .addService(manageableService);
+
+        updateGroupsContainer(groups);
+    }
 }

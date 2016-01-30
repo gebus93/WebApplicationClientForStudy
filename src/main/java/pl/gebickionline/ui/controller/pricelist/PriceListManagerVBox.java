@@ -24,6 +24,7 @@ public class PriceListManagerVBox extends VBox {
         Label generatePriceList = new LabelButton("Generuj cennik (PDF)");
 
         createNewGroup.setOnMouseClicked(event -> showCreateGroupDialog());
+        createNewService.setOnMouseClicked(event -> showCreateServiceDialog());
         generatePriceList.setOnMouseClicked(event -> generatePriceList());
 
         getChildren().addAll(
@@ -45,6 +46,20 @@ public class PriceListManagerVBox extends VBox {
             priceList.addGroup(manageableGroup.get());
             PriceListManager.getInstance().updateManageablePriceList(priceList.asManageablePriceList());
 
+        }
+    }
+
+
+    private void showCreateServiceDialog() {
+        ServiceDialog serviceDialog = new ServiceDialog();
+        serviceDialog.setTitle("Tworzenie nowej usługi");
+        Optional<ManageableService> manageableService = serviceDialog.showAndWait();
+
+        if (manageableService.isPresent()) {
+
+            PriceList priceList = PriceList.getInstance();
+            priceList.addService(manageableService.get());
+            PriceListManager.getInstance().updateManageablePriceList(priceList.asManageablePriceList());
         }
     }
 
