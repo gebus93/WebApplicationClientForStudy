@@ -47,10 +47,16 @@ public class ContactDataEditorController {
         if (!textChanged)
             return;
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy na pewno chcesz porzucić dokonane zmiany?", ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.YES)
+//
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Czy na pewno chcesz porzucić dokonane zmiany?", ButtonType.YES, ButtonType.NO);
+//        alert.showAndWait();
+//
+//        if (alert.getResult() == ButtonType.YES)
+        ConfirmationAlert confirmationDialog = new ConfirmationAlert(
+                "Potwierdzenie porzucenia zmian",
+                "Czy na pewno chcesz porzucić dokonane zmiany?"
+        );
+        if (confirmationDialog.showAndWait().get() == ButtonType.YES)
             setActualPageContentToEditor();
     }
 

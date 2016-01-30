@@ -81,6 +81,7 @@ public class Main extends Application {
         }
 
         Stage dialogStage = new Stage();
+        dialogStage.getIcons().add(ImageLoader.load("login.png"));
         dialogStage.setTitle("Logowanie do aplikacji");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);

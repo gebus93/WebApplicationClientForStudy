@@ -2,11 +2,8 @@ package pl.gebickionline.ui.controller;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.image.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import pl.gebickionline.ui.Main;
-
-import java.io.InputStream;
 
 /**
  * Created by Łukasz on 2016-01-30.
@@ -25,11 +22,11 @@ public class NavBar extends HBox {
         setPrefHeight(NAV_BAR_HEIGHT);
         setMinHeight(NAV_BAR_HEIGHT);
 
-        homeButton = getButton("Panel domowy", "images/home.png");
+        homeButton = getButton("Panel domowy", "home.png");
         setWidth(homeButton, NAV_BAR_HEIGHT);
-        logoutButton = getButton("Wyloguj", "images/logout.png");
-        loginButton = getButton("Zaloguj", "images/login.png");
-        exitButton = getButton("Zamknij program", "images/exit.png");
+        logoutButton = getButton("Wyloguj", "logout.png");
+        loginButton = getButton("Zaloguj", "login.png");
+        exitButton = getButton("Zamknij program", "exit.png");
         exitButton.setOnMouseClicked(event -> System.exit(0));
         setWidth(exitButton, NAV_BAR_HEIGHT + 20);
     }
@@ -42,8 +39,7 @@ public class NavBar extends HBox {
 
         setMargin(layout, new Insets(10, 15, 10, 15));
 
-        InputStream inputStream = Main.class.getResourceAsStream("view/" + iconPath);
-        ImageView icon = new ImageView(new Image(inputStream));
+        ImageView icon = new ImageView(ImageLoader.load(iconPath));
         icon.setFitHeight(50);
         icon.setFitWidth(50);
 
