@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.jetbrains.annotations.NotNull;
-import pl.gebickionline.ui.exception.ExceptionHandler;
 import pl.gebickionline.ui.controller.*;
+import pl.gebickionline.ui.exception.ExceptionHandler;
 
 import java.io.IOException;
 
@@ -19,6 +19,7 @@ public class Main extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private MainWindowController mainWindowController;
+    private NavBar navBar = new NavBar();
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,6 +40,7 @@ public class Main extends Application {
         BorderPane homeView;
         try {
             homeView = loader.load();
+            navBar.showMenuForUnauthorized();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -87,6 +89,7 @@ public class Main extends Application {
         FXMLLoader loader = getFxmlLoader("MainWindow");
         try {
             rootLayout = loader.load();
+            ((VBox) rootLayout.getTop()).getChildren().add(navBar);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -116,6 +119,8 @@ public class Main extends Application {
             MainViewController controller = loader.getController();
             controller.setMainApp(this);
             changeView(view);
+
+            navBar.showMenuForAuthorized();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

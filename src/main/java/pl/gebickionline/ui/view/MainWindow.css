@@ -62,7 +62,6 @@
     -fx-opacity: 1;
 }
 
-
 /******************************/
 .sidebar-header {
     -fx-font-size: 150%;
@@ -75,4 +74,71 @@
 .margin-top-medium {
     -fx-background-insets: 20px 0px 0px 0px;
     -fx-padding: 25px 0px 5px 0px;
+}
+
+/******************************/
+.menu-bar {
+    -fx-background-color: #333333, linear-gradient(to bottom, #111 0%, #111 90%, #000 100%);
+    -fx-text-fill: #eee;
+}
+
+.menu-bar .label {
+    -fx-text-fill: #eee;
+}
+
+.menu:hover {
+    -fx-background-color: #eee, linear-gradient(to bottom, #eee 0%, #eee 90%, #aaa 100%);
+}
+
+.menu:hover .label {
+    -fx-text-fill: #333;
+}
+
+.menu-item .label {
+    -fx-text-fill: white !important;
+}
+
+.menu-item:focused {
+    -fx-background-color: #555;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #eee;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: black;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    /*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+.nav-bar {
+    -fx-background-color: #333333, linear-gradient(to bottom, #222 0%, #555 10%, #333 100%);
+    -fx-border-color: #111111;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.nav-bar-button Label {
+    -fx-font-size: 90%;
+    -fx-text-fill: #eee;
+}
+
+.nav-bar-button {
+    -fx-alignment: top-center;
+    -fx-cursor: hand;
+    -fx-padding: 5px;
+
+}
+
+.nav-bar-button:hover {
+    -fx-background-color: #eee;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
+}
+
+.nav-bar-button:hover Label {
+    -fx-text-fill: #333;
 }
