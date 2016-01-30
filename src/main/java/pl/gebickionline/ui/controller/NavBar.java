@@ -71,4 +71,16 @@ public class NavBar extends HBox {
         getChildren().clear();
         getChildren().addAll(homeButton, logoutButton);
     }
+
+    public void addLoginAction(Runnable runnable) {
+        loginButton.setOnMouseClicked(event -> runnable.run());
+    }
+
+    public void addLogoutAction(Runnable runnable) {
+        logoutButton.setOnMouseClicked(event -> runnable.run());
+    }
+
+    public void addHomeButtonAction(Runnable runnable) {
+        homeButton.setOnMouseClicked(event -> runnable.run());
+    }
 }

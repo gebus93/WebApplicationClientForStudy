@@ -26,7 +26,7 @@ public class MainWindowController {
     }
 
     @FXML
-    private void logout() {
+    public void logout() {
         AuthorizationProvider authorizationProvider = AuthorizationProvider.getInstance();
         if (authorizationProvider.isLoggedIn())
             authorizationProvider.logout();

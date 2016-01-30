@@ -31,6 +31,10 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Panel administracyjny");
 
+        navBar.addLoginAction(this::showLoginForm);
+        navBar.addLogoutAction(() -> mainWindowController.logout());
+        navBar.addHomeButtonAction(this::showMainView);
+
         initRootLayout();
         showHomeView();
     }
