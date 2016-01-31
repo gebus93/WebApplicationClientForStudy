@@ -2,7 +2,7 @@ package pl.gebickionline.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.*;
@@ -21,9 +21,11 @@ public class Main extends Application {
     private BorderPane rootLayout;
     private MainWindowController mainWindowController;
     private NavBar navBar = new NavBar();
+    private static Main instance;
 
     @Override
     public void start(Stage primaryStage) {
+        instance = this;
         Thread
                 .currentThread()
                 .setUncaughtExceptionHandler(new ExceptionHandler(this));
@@ -39,6 +41,11 @@ public class Main extends Application {
 
         initRootLayout();
         showHomeView();
+
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 
     public void showHomeView() {
@@ -140,5 +147,10 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/" + viewName + ".fxml"));
         return loader;
+    }
+
+
+    public void setCenter(Node node) {
+        rootLayout.setCenter(node);
     }
 }

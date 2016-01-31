@@ -3,6 +3,7 @@ package pl.gebickionline.ui.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import pl.gebickionline.ui.Main;
+import pl.gebickionline.ui.controller.news.NewsList;
 
 /**
  * Created by Łukasz on 2016-01-02.
@@ -16,7 +17,7 @@ public class MainViewController {
 
     @FXML
     private void goToNewsManagement() {
-        showAlert("Aktualności");
+        mainApp.setCenter(new NewsList());
     }
 
     @FXML
