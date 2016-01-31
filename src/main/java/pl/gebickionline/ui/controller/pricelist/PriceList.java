@@ -11,6 +11,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 import static pl.gebickionline.ui.controller.pricelist.MovementDirection.UP;
 import static pl.gebickionline.ui.controller.pricelist.PriceListContainerVBox.SelectionType.SELECTED;
+import static pl.gebickionline.ui.controller.pricelist.PriceListManagerVBox.ItemType.*;
 
 /**
  * Created by Łukasz on 2016-01-23.
@@ -57,6 +58,15 @@ public class PriceList {
         Label groupNameLabel = getPriceListContainerVBox().addGroup(group.groupName());
         groupNameLabel.setOnMouseClicked(event -> changeSelectedGroup(groupNameLabel, group));
 
+        PriceListManagerVBox.SelectedItem selectedItem = priceListController.get()
+                .getPriceListManagerBox()
+                .getSelectedItem();
+        if (selectedItem != null
+                && selectedItem.getType() == GROUP
+                && selectedItem.getId().equals(group.id()))
+            changeSelectedGroup(groupNameLabel, group);
+
+
         group.services()
                 .stream()
                 .sorted()
@@ -74,6 +84,16 @@ public class PriceList {
 
     private void addServiceToView(ManageableService service) {
         HBox serviceBox = getPriceListContainerVBox().addService(service);
+
+        PriceListManagerVBox.SelectedItem selectedItem = priceListController.get()
+                .getPriceListManagerBox()
+                .getSelectedItem();
+
+        if (selectedItem != null
+                && selectedItem.getType() == SERVICE
+                && selectedItem.getId().equals(service.id()))
+            changeSelectedService(serviceBox, service);
+
         serviceBox.setOnMouseClicked(event -> changeSelectedService(serviceBox, service));
     }
 

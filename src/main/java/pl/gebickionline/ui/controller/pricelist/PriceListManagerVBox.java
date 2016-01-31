@@ -14,6 +14,34 @@ import java.util.Optional;
  */
 public class PriceListManagerVBox extends VBox {
     private Optional<VBox> managementMenu = Optional.empty();
+    private SelectedItem selectedItem;
+
+    public SelectedItem getSelectedItem() {
+        return selectedItem;
+    }
+
+    enum ItemType {
+        SERVICE, GROUP
+    }
+
+    class SelectedItem {
+        private final Long id;
+        private final ItemType type;
+
+        public SelectedItem(Long id, ItemType type) {
+            this.id = id;
+            this.type = type;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public ItemType getType() {
+            return type;
+        }
+    }
+
 
     public PriceListManagerVBox() {
         super();
@@ -103,6 +131,7 @@ public class PriceListManagerVBox extends VBox {
             hideManagementMenu();
 
         managementMenu = Optional.of(new ServiceManagementMenuVBox(this, service));
+        selectedItem = new SelectedItem(service.id(), ItemType.SERVICE);
         getChildren().add(managementMenu.get());
     }
 
@@ -111,13 +140,14 @@ public class PriceListManagerVBox extends VBox {
             return;
 
         getChildren().remove(managementMenu.get());
+        selectedItem = null;
     }
 
     public void showManagementMenu(ManageableGroup group) {
         if (managementMenu.isPresent())
             hideManagementMenu();
-
-        managementMenu = Optional.of(new GroupManagementMenuVBox(this,group));
+        selectedItem = new SelectedItem(group.id(), ItemType.GROUP);
+        managementMenu = Optional.of(new GroupManagementMenuVBox(this, group));
         getChildren().add(managementMenu.get());
 
     }
