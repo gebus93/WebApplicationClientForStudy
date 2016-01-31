@@ -114,4 +114,13 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
         services.add(manageableService);
 
     }
+
+    public void removeService(ManageableService service) {
+        ManageableService serviceInstance = services.stream()
+                .filter(s -> Objects.equals(s.id(), service.id()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Usługa nie istnieje"));
+
+        services.remove(serviceInstance);
+    }
 }

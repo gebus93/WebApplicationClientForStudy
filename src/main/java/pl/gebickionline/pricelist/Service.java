@@ -5,9 +5,9 @@ package pl.gebickionline.pricelist;
  */
 public class Service {
     protected String serviceName;
-    protected Long price;
-    protected Long minPrice;
-    protected Long maxPrice;
+    protected Integer price;
+    protected Integer minPrice;
+    protected Integer maxPrice;
     protected long ordinal;
 
     public Service(pl.gebickionline.communication.Service s) {
@@ -21,11 +21,11 @@ public class Service {
     protected Service() {
     }
 
-    public Long maxPrice() {
+    public Integer maxPrice() {
         return maxPrice;
     }
 
-    public Long minPrice() {
+    public Integer minPrice() {
         return minPrice;
     }
 
@@ -33,7 +33,7 @@ public class Service {
         return ordinal;
     }
 
-    public Long price() {
+    public Integer price() {
         return price;
     }
 

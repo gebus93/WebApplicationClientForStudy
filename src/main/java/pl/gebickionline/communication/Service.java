@@ -7,9 +7,9 @@ public class Service {
     private final Long id;
     private final Boolean visible;
     private final String serviceName;
-    private final Long price;
-    private final Long minPrice;
-    private final Long maxPrice;
+    private final Integer price;
+    private final Integer minPrice;
+    private final Integer maxPrice;
     private final Long ordinal;
     private final Long groupID;
 
@@ -24,11 +24,11 @@ public class Service {
         this.visible = builder.visible;
     }
 
-    public Long maxPrice() {
+    public Integer maxPrice() {
         return maxPrice;
     }
 
-    public Long minPrice() {
+    public Integer minPrice() {
         return minPrice;
     }
 
@@ -36,7 +36,7 @@ public class Service {
         return ordinal;
     }
 
-    public Long price() {
+    public Integer price() {
         return price;
     }
 
@@ -60,9 +60,9 @@ public class Service {
         private Long id;
         private Boolean visible;
         private String serviceName;
-        private Long price;
-        private Long minPrice;
-        private Long maxPrice;
+        private Integer price;
+        private Integer minPrice;
+        private Integer maxPrice;
         private Long ordinal;
         private Long groupID;
 
@@ -96,17 +96,17 @@ public class Service {
             return this;
         }
 
-        public Builder withPrice(Long price) {
+        public Builder withPrice(Integer price) {
             this.price = price;
             return this;
         }
 
-        public Builder withMinPrice(Long minPrice) {
+        public Builder withMinPrice(Integer minPrice) {
             this.minPrice = minPrice;
             return this;
         }
 
-        public Builder withMaxPrice(Long maxPrice) {
+        public Builder withMaxPrice(Integer maxPrice) {
             this.maxPrice = maxPrice;
             return this;
         }

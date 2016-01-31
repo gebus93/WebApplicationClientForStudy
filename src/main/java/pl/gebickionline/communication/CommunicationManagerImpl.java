@@ -249,9 +249,9 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                         .withGroupID(s.getLong("groupID"))
                         .withServiceName(s.getString("name"))
                         .withOrdinal(s.getLong("ordinal"))
-                        .withPrice(s.getLong("price"))
-                        .withMaxPrice(s.getLong("maxPrice"))
-                        .withMinPrice(s.getLong("minPrice"))
+                        .withPrice(s.getInt("price"))
+                        .withMaxPrice(s.getInt("maxPrice"))
+                        .withMinPrice(s.getInt("minPrice"))
                         .build()
                 ).collect(toList());
 
@@ -345,9 +345,9 @@ public class CommunicationManagerImpl implements CommunicationManager, Authoriza
                         .withServiceName(g.getString("name"))
                         .withOrdinal(g.getLong("ordinal"))
                         .withVisible(g.getBoolean("visible"))
-                        .withPrice(g.getLong("price"))
-                        .withMinPrice(g.getLong("minPrice"))
-                        .withMaxPrice(g.getLong("maxPrice"))
+                        .withPrice(g.getInt("price"))
+                        .withMinPrice(g.getInt("minPrice"))
+                        .withMaxPrice(g.getInt("maxPrice"))
                         .withGroupID(g.getLong("groupID"))
                         .build())
                 .collect(toList());

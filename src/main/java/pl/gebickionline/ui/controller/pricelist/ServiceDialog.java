@@ -101,10 +101,10 @@ public class ServiceDialog extends Dialog<ManageableService> {
 
     }
 
-    private Long getPrice(TextField textField) {
+    private Integer getPrice(TextField textField) {
         if (textField.getText().isEmpty())
             return null;
-        return (long) (Double.valueOf(textField.getText()) * 100);
+        return (int) (Double.valueOf(textField.getText()) * 100);
     }
 
     private void initializePriceTypeChoiceBox(boolean concretePriceSelected) {
@@ -183,10 +183,8 @@ public class ServiceDialog extends Dialog<ManageableService> {
         textField.setMaxWidth(width);
         textField.setPrefWidth(width);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                ((StringProperty) observable).setValue("0");
+            if (newValue.isEmpty())
                 return;
-            }
 
             if (!newValue.matches("[0-9]+\\.?[0-9]{0,2}")) {
                 ((StringProperty) observable).setValue(oldValue);
@@ -194,7 +192,8 @@ public class ServiceDialog extends Dialog<ManageableService> {
             }
 
             try {
-                Double.parseDouble(newValue);
+                Double aDouble = Double.parseDouble(newValue);
+                int tmp = aDouble.intValue();
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 ((StringProperty) observable).setValue(oldValue);

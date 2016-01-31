@@ -46,7 +46,7 @@ public class PriceListManagerTest {
         return new ManageablePriceList(Arrays.asList(group1, group2));
     }
 
-    private ManageableService serviceWithPriceRange(String name, long minPrice, long maxPrice, boolean visible, long ordinal) {
+    private ManageableService serviceWithPriceRange(String name, int minPrice, int maxPrice, boolean visible, long ordinal) {
         return new ManageableService.Builder()
                 .withId(null)
                 .withServiceName(name)
@@ -57,7 +57,7 @@ public class PriceListManagerTest {
                 .build();
     }
 
-    private ManageableService serviceWithConcretePrice(String name, long price, boolean visible, long ordinal) {
+    private ManageableService serviceWithConcretePrice(String name, int price, boolean visible, long ordinal) {
         return new ManageableService.Builder()
                 .withId(null)
                 .withServiceName(name)

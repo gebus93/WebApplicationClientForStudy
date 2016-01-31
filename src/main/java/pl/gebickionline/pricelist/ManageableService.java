@@ -83,9 +83,9 @@ public class ManageableService extends Service implements Comparable<ManageableS
     public static class Builder {
         private Long id;
         private String serviceName;
-        private Long price;
-        private Long minPrice;
-        private Long maxPrice;
+        private Integer price;
+        private Integer minPrice;
+        private Integer maxPrice;
         private long ordinal;
         private boolean visible;
         private Long groupId;
@@ -106,17 +106,17 @@ public class ManageableService extends Service implements Comparable<ManageableS
             return this;
         }
 
-        public Builder withPrice(Long price) {
+        public Builder withPrice(Integer price) {
             this.price = price;
             return this;
         }
 
-        public Builder withMinPrice(Long minPrice) {
+        public Builder withMinPrice(Integer minPrice) {
             this.minPrice = minPrice;
             return this;
         }
 
-        public Builder withMaxPrice(Long maxPrice) {
+        public Builder withMaxPrice(Integer maxPrice) {
             this.maxPrice = maxPrice;
             return this;
         }

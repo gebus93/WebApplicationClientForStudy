@@ -97,7 +97,7 @@ public class PdfPriceList {
         return FontFactory.getFont(FontFactory.HELVETICA, "cp1250", 12, Font.NORMAL, new CMYKColor(255, 255, 255, 0));
     }
 
-    private String divideBy100(Long price1) {
+    private String divideBy100(int price1) {
         return String.format("%.2f", price1 / 100.0);
     }
 

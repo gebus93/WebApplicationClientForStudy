@@ -156,4 +156,15 @@ public class PriceList {
 
         updateGroupsContainer(groups);
     }
+
+    public void removeService(ManageableService service) {
+        groups.stream()
+                .filter(g -> Objects.equals(g.id(), service.groupId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"))
+                .removeService(service);
+
+        PriceListManager.getInstance().updateManageablePriceList(asManageablePriceList());
+        updateGroupsContainer(groups);
+    }
 }
