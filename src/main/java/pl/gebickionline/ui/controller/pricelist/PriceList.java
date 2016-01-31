@@ -188,6 +188,7 @@ public class PriceList {
     public void updateGroup(ManageableGroup group) {
         ManageableGroup groupInstance = findGroupInList(group);
         groupInstance.merge(group);
+        sortGroups();
         recalculateOrdinals();
         updateGroupsContainer(groups);
     }

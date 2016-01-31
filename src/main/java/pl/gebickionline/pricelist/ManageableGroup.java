@@ -14,7 +14,7 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
     private Long id;
     private boolean visible;
     private String groupName;
-    private long ordinal;
+    private long ordinal = 1;
     private List<ManageableService> services;
 
     public ManageableGroup(Long id, String groupName, boolean visible, long ordinal) {
@@ -122,5 +122,11 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
                 .orElseThrow(() -> new RuntimeException("Usługa nie istnieje"));
 
         services.remove(serviceInstance);
+    }
+
+    public void merge(ManageableGroup group) {
+        this.groupName = group.groupName;
+        this.visible = group.visible;
+        this.ordinal = group.ordinal;
     }
 }

@@ -22,7 +22,9 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
     public ServiceGroupDialog(ManageableGroup group) {
         super();
 
-        initializeLocationChoiceBox(group.ordinal());
+        initializeLocationChoiceBox(group.ordinal() - 1);
+        visible.setSelected(group.visible());
+        groupNameField.setText(group.groupName());
 
         getDialogPane().setContent(layout);
         getDialogPane().getButtonTypes().addAll(saveButtonType, cancel);
@@ -41,7 +43,7 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
         layout.add(location, 1, 2);
 
         Node saveButton = getDialogPane().lookupButton(saveButtonType);
-        saveButton.setDisable(true);
+        saveButton.setDisable(group.groupName() == null || group.groupName().trim().isEmpty());
 
         groupNameField.setOnKeyReleased(event -> {
             saveButton.setDisable(groupNameField.getText().isEmpty());
