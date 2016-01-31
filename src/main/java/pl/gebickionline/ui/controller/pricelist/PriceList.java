@@ -17,6 +17,7 @@ import static pl.gebickionline.ui.controller.pricelist.PriceListContainerVBox.Se
  */
 public class PriceList {
     private static PriceList instance;
+    private final PriceListManager priceListManager = PriceListManager.getInstance();
 
     private ObservableList<ManageableGroup> groups;
     private Optional<PriceListController> priceListController = Optional.empty();
@@ -80,7 +81,7 @@ public class PriceList {
         groups.clear();
         sortGroups();
         groups.addAll(manageableGroups);
-        PriceListManager.getInstance().updateManageablePriceList(asManageablePriceList());
+        priceListManager.updateManageablePriceList(asManageablePriceList());
 
     }
 
@@ -164,7 +165,17 @@ public class PriceList {
                 .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"))
                 .removeService(service);
 
-        PriceListManager.getInstance().updateManageablePriceList(asManageablePriceList());
+        priceListManager.updateManageablePriceList(asManageablePriceList());
         updateGroupsContainer(groups);
+    }
+
+    public void removeGroup(ManageableGroup group) {
+        ManageableGroup groupInstance = groups.stream()
+                .filter(g -> Objects.equals(g.id(), group.id()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"));
+
+        groups.remove(groupInstance);
+        priceListManager.updateManageablePriceList(asManageablePriceList());
     }
 }

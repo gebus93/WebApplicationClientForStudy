@@ -102,7 +102,7 @@ public class PriceListManagerVBox extends VBox {
         if (managementMenu.isPresent())
             hideManagementMenu();
 
-        managementMenu = Optional.of(new ServiceManagementMenuVBox(service));
+        managementMenu = Optional.of(new ServiceManagementMenuVBox(this, service));
         getChildren().add(managementMenu.get());
     }
 
@@ -117,7 +117,7 @@ public class PriceListManagerVBox extends VBox {
         if (managementMenu.isPresent())
             hideManagementMenu();
 
-        managementMenu = Optional.of(new GroupManagementMenuVBox(group));
+        managementMenu = Optional.of(new GroupManagementMenuVBox(this,group));
         getChildren().add(managementMenu.get());
 
     }

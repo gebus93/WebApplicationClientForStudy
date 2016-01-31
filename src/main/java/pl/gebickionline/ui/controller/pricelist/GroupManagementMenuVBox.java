@@ -1,8 +1,9 @@
 package pl.gebickionline.ui.controller.pricelist;
 
-import javafx.scene.Node;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
-import pl.gebickionline.pricelist.*;
+import pl.gebickionline.pricelist.ManageableGroup;
+import pl.gebickionline.ui.controller.ConfirmationAlert;
 import pl.gebickionline.ui.controller.pricelist.control.*;
 
 import static pl.gebickionline.ui.controller.pricelist.MovementDirection.*;
@@ -11,30 +12,43 @@ import static pl.gebickionline.ui.controller.pricelist.MovementDirection.*;
  * Created by Łukasz on 2016-01-25.
  */
 public class GroupManagementMenuVBox extends VBox {
-    public GroupManagementMenuVBox(ManageableGroup group) {
+
+    private final LabelButton editButton = new LabelButton("Edytuj grupę");
+    private final LabelButton deleteButton = new LabelButton("Usuń grupę");
+    private final LabelButton moveUp = new LabelButton("Przenieś o 1 do góry");
+    private final LabelButton moveDown = new LabelButton("Przenieś o 1 w dół");
+    private final PriceList priceList = PriceList.getInstance();
+    private final PriceListManagerVBox priceListManagerVBox;
+
+    public GroupManagementMenuVBox(PriceListManagerVBox priceListManagerVBox, ManageableGroup group) {
+        this.priceListManagerVBox = priceListManagerVBox;
         SideBarHeaderLabel headerLabel = new SideBarHeaderLabel(String.format("Zarządzanie grupą\n\"%s\"", group.groupName()));
         headerLabel.getStyleClass().add("margin-top-medium");
-        add(headerLabel);
-        add(new LabelButton("Edytuj grupę"));
-        add(new LabelButton("Usuń grupę"));
-        LabelButton moveUp = new LabelButton("Przenieś o 1 do góry");
-        moveUp.setOnMouseClicked(event -> moveUp(group));
-        add(moveUp);
-        LabelButton moveDown = new LabelButton("Przenieś o 1 w dół");
-        moveDown.setOnMouseClicked(event -> moveDown(group));
-        add(moveDown);
+
+        moveUp.setOnMouseClicked(event -> priceList.moveGroup(group, UP));
+        moveDown.setOnMouseClicked(event -> priceList.moveGroup(group, DOWN));
+        deleteButton.setOnMouseClicked(event -> removeGroup(group));
+
+        getChildren()
+                .addAll(
+                        headerLabel,
+                        editButton,
+                        deleteButton,
+                        moveUp,
+                        moveDown
+                );
 
     }
 
-    private void moveDown(ManageableGroup group) {
-        PriceList.getInstance().moveGroup(group, DOWN);
+    private void removeGroup(ManageableGroup group) {
+        ConfirmationAlert confirmationAlert = new ConfirmationAlert(
+                "Potwierdzenie usunięcia usługi",
+                String.format("Czy na pewno chcesz usunąć grupę \"%s\" wraz ze wszystkimi jej usługami?", group.groupName())
+        );
+        if (confirmationAlert.showAndWait().get() == ButtonType.YES) {
+            priceList.removeGroup(group);
+            priceListManagerVBox.hideManagementMenu();
+        }
     }
 
-    private void moveUp(ManageableGroup group) {
-        PriceList.getInstance().moveGroup(group, UP);
-    }
-
-    private void add(Node node) {
-        getChildren().add(node);
-    }
 }
