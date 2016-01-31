@@ -171,22 +171,22 @@ public class PriceList {
     }
 
     public void removeGroup(ManageableGroup group) {
-        ManageableGroup groupInstance = findGroupInList(group);
+        ManageableGroup groupInstance = findGroupInList(group.id());
 
         groups.remove(groupInstance);
         recalculateOrdinals();
         priceListManager.updateManageablePriceList(asManageablePriceList());
     }
 
-    private ManageableGroup findGroupInList(ManageableGroup group) {
+    private ManageableGroup findGroupInList(Long groupID) {
         return groups.stream()
-                .filter(g -> Objects.equals(g.id(), group.id()))
+                .filter(g -> Objects.equals(g.id(), groupID))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"));
     }
 
     public void updateGroup(ManageableGroup group) {
-        ManageableGroup groupInstance = findGroupInList(group);
+        ManageableGroup groupInstance = findGroupInList(group.id());
         groupInstance.merge(group);
         sortGroups();
         recalculateOrdinals();
@@ -196,5 +196,13 @@ public class PriceList {
     private void recalculateOrdinals() {
         final Long[] newOrdinal = {1L};
         groups.stream().forEachOrdered(g -> g.ordinal(newOrdinal[0]++));
+    }
+
+    public void updateService(ManageableService oldService, ManageableService newService) {
+        ManageableGroup oldGroup = findGroupInList(oldService.groupId());
+        ManageableGroup newGroup = findGroupInList(newService.groupId());
+        oldGroup.removeService(oldService);
+        newGroup.addService(newService);
+        updateGroupsContainer(groups);
     }
 }

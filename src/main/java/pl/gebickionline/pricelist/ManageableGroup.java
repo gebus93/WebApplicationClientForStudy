@@ -103,8 +103,8 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
 
     private void sortServices() {
         final Long[] newOrdinal = {1L};
-        services.stream().sorted().forEachOrdered(s -> s.ordinal(newOrdinal[0]++));
         services.sort((s1, s2) -> Long.valueOf(s1.ordinal()).compareTo(s2.ordinal()));
+        services.stream().sorted().forEachOrdered(s -> s.ordinal(newOrdinal[0]++));
     }
 
     public void addService(ManageableService manageableService) {
@@ -112,7 +112,7 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
             services = new ArrayList<>();
 
         services.add(manageableService);
-
+        sortServices();
     }
 
     public void removeService(ManageableService service) {
@@ -122,6 +122,7 @@ public class ManageableGroup implements Comparable<ManageableGroup> {
                 .orElseThrow(() -> new RuntimeException("Usługa nie istnieje"));
 
         services.remove(serviceInstance);
+        sortServices();
     }
 
     public void merge(ManageableGroup group) {

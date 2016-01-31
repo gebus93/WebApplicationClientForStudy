@@ -53,7 +53,6 @@ public class GroupManagementMenuVBox extends VBox {
             PriceList priceList = PriceList.getInstance();
             priceList.updateGroup(manageableGroupOptional.get());
             PriceListManager.getInstance().updateManageablePriceList(priceList.asManageablePriceList());
-
         }
 
     }

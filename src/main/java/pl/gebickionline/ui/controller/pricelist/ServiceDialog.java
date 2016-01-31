@@ -50,7 +50,13 @@ public class ServiceDialog extends Dialog<ManageableService> {
         super();
 
         initializeGroupChoiceBox(service.groupId());
-        initializePriceTypeChoiceBox(service.price() == null);
+        initializePriceTypeChoiceBox(service.price() != null);
+
+        serviceNameField.setText(service.serviceName());
+        visible.setSelected(service.isVisible());
+        concretePriceField.setText(getStringPrice(service.price()));
+        minPriceField.setText(getStringPrice(service.minPrice()));
+        maxPriceField.setText(getStringPrice(service.maxPrice()));
 
         getDialogPane().setContent(layout);
         getDialogPane().getButtonTypes().addAll(saveButtonType, cancel);
@@ -75,7 +81,7 @@ public class ServiceDialog extends Dialog<ManageableService> {
         layout.add(this.priceContainer, 1, 4);
 
         Node saveButton = getDialogPane().lookupButton(saveButtonType);
-        saveButton.setDisable(true);
+        saveButton.setDisable(service.serviceName() == null || service.serviceName().isEmpty());
 
         serviceNameField.setOnKeyReleased(event -> {
             saveButton.setDisable(serviceNameField.getText().isEmpty());
@@ -101,10 +107,15 @@ public class ServiceDialog extends Dialog<ManageableService> {
 
     }
 
+    private String getStringPrice(Integer price) {
+        return price == null ? null : String.format("%.2f", price / 100f);
+    }
+
     private Integer getPrice(TextField textField) {
-        if (textField.getText().isEmpty())
+        String text = textField.getText();
+        if (text == null || text.isEmpty())
             return null;
-        return (int) (Double.valueOf(textField.getText()) * 100);
+        return (int) (Double.valueOf(text) * 100);
     }
 
     private void initializePriceTypeChoiceBox(boolean concretePriceSelected) {
@@ -183,11 +194,16 @@ public class ServiceDialog extends Dialog<ManageableService> {
         textField.setMaxWidth(width);
         textField.setPrefWidth(width);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty())
+            if (newValue == null || newValue.isEmpty())
                 return;
 
-            if (!newValue.matches("[0-9]+\\.?[0-9]{0,2}")) {
+            if (!newValue.matches("[0-9]+[\\.,]?[0-9]{0,2}")) {
                 ((StringProperty) observable).setValue(oldValue);
+                return;
+            }
+
+            if (newValue.matches("([0-9]*),([0-9]{0,2})")) {
+                ((StringProperty) observable).setValue(newValue.replaceAll("([0-9]*),([0-9]{0,2})", "$1.$2"));
                 return;
             }
 
