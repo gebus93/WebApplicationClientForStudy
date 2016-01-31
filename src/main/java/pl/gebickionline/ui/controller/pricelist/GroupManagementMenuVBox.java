@@ -2,9 +2,11 @@ package pl.gebickionline.ui.controller.pricelist;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
-import pl.gebickionline.pricelist.ManageableGroup;
+import pl.gebickionline.pricelist.*;
 import pl.gebickionline.ui.controller.ConfirmationAlert;
 import pl.gebickionline.ui.controller.pricelist.control.*;
+
+import java.util.Optional;
 
 import static pl.gebickionline.ui.controller.pricelist.MovementDirection.*;
 
@@ -28,6 +30,7 @@ public class GroupManagementMenuVBox extends VBox {
         moveUp.setOnMouseClicked(event -> priceList.moveGroup(group, UP));
         moveDown.setOnMouseClicked(event -> priceList.moveGroup(group, DOWN));
         deleteButton.setOnMouseClicked(event -> removeGroup(group));
+        editButton.setOnMouseClicked(event -> editGroup(group));
 
         getChildren()
                 .addAll(
@@ -37,6 +40,21 @@ public class GroupManagementMenuVBox extends VBox {
                         moveUp,
                         moveDown
                 );
+
+    }
+
+    private void editGroup(ManageableGroup group) {
+        ServiceGroupDialog serviceGroupDialog = new ServiceGroupDialog(group);
+        serviceGroupDialog.setTitle(String.format("Edycja grupy \"%s\"", group.groupName()));
+        Optional<ManageableGroup> manageableGroupOptional = serviceGroupDialog.showAndWait();
+
+        if (manageableGroupOptional.isPresent()) {
+
+            PriceList priceList = PriceList.getInstance();
+            priceList.updateGroup(manageableGroupOptional.get());
+            PriceListManager.getInstance().updateManageablePriceList(priceList.asManageablePriceList());
+
+        }
 
     }
 

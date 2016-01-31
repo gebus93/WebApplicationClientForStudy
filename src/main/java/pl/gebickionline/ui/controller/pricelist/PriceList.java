@@ -101,8 +101,7 @@ public class PriceList {
 
     public void addGroup(ManageableGroup newGroup) {
         groups.add((int) newGroup.ordinal(), newGroup);
-        final Long[] newOrdinal = {1L};
-        groups.stream().forEachOrdered(g -> g.ordinal(newOrdinal[0]++));
+        recalculateOrdinals();
     }
 
     public ManageablePriceList asManageablePriceList() {
@@ -127,25 +126,27 @@ public class PriceList {
 
     public void moveGroup(ManageableGroup group, MovementDirection direction) {
         long newOrdinal;
+        sortGroups();
         if (direction == UP) {
             if (group.ordinal() == 1)
                 return;
-
             newOrdinal = group.ordinal() - 1;
+            int index = (int) newOrdinal - 1;
+            groups.get(index).ordinal(group.ordinal());
         } else {
             if (group.ordinal() == groups.size())
                 return;
 
             newOrdinal = group.ordinal() + 1;
+            groups.get((int) newOrdinal - 1).ordinal(group.ordinal());
         }
 
-        groups.get((int) newOrdinal - 1).ordinal(group.ordinal());
         group.ordinal(newOrdinal);
         changeContent(new ArrayList<>(groups));
     }
 
     private void sortGroups() {
-        groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o1.ordinal()));
+        groups.sort((o1, o2) -> Long.valueOf(o1.ordinal()).compareTo(o2.ordinal()));
     }
 
     public void addService(ManageableService manageableService) {
@@ -170,12 +171,29 @@ public class PriceList {
     }
 
     public void removeGroup(ManageableGroup group) {
-        ManageableGroup groupInstance = groups.stream()
+        ManageableGroup groupInstance = findGroupInList(group);
+
+        groups.remove(groupInstance);
+        recalculateOrdinals();
+        priceListManager.updateManageablePriceList(asManageablePriceList());
+    }
+
+    private ManageableGroup findGroupInList(ManageableGroup group) {
+        return groups.stream()
                 .filter(g -> Objects.equals(g.id(), group.id()))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Grupa nie istnieje"));
+    }
 
-        groups.remove(groupInstance);
-        priceListManager.updateManageablePriceList(asManageablePriceList());
+    public void updateGroup(ManageableGroup group) {
+        ManageableGroup groupInstance = findGroupInList(group);
+        groupInstance.merge(group);
+        recalculateOrdinals();
+        updateGroupsContainer(groups);
+    }
+
+    private void recalculateOrdinals() {
+        final Long[] newOrdinal = {1L};
+        groups.stream().forEachOrdered(g -> g.ordinal(newOrdinal[0]++));
     }
 }
