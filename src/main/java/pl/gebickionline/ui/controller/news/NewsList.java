@@ -47,7 +47,6 @@ public class NewsList extends BorderPane {
 
         title.getStyleClass().addAll("center-left");
 
-
         changeColumnWidth(id, 0.1);
         changeColumnWidth(title, 0.35);
         changeColumnWidth(creationDate, 0.2);
@@ -69,6 +68,10 @@ public class NewsList extends BorderPane {
                 actions
         );
         table.setItems(newsList);
+
+        id.setSortType(TableColumn.SortType.DESCENDING);
+        table.getSortOrder().add(id);
+
     }
 
     private void changeColumnWidth(TableColumn column, double percentOfTableWidth) {

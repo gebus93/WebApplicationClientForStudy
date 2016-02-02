@@ -4,7 +4,12 @@ import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import pl.gebickionline.ui.controller.ImageLoader;
+import pl.gebickionline.communication.News;
+import pl.gebickionline.news.NewsManager;
+import pl.gebickionline.ui.Main;
+import pl.gebickionline.ui.controller.*;
+
+import java.util.Optional;
 
 class ActionsCell extends TableCell<NewsVO, Long> {
     @Override
@@ -15,7 +20,19 @@ class ActionsCell extends TableCell<NewsVO, Long> {
 
             VBox editButton = getImageButton("edit.png", "Edytuj wpis");
             VBox deleteButton = getImageButton("delete.png", "Usuń wpis");
+            News news = NewsManager.getInstance().getNews(newsID);
+            editButton.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsEditor(news)));
+            deleteButton.setOnMouseClicked(event -> {
+                Optional<ButtonType> buttonType = new ConfirmationAlert(
+                        String.format("Usuwanie wpisu \"%s\"", news.title()),
+                        "Czy na pewno chcesz usunąć wpis?"
+                ).showAndWait();
 
+                if (buttonType.get() == ButtonType.YES) {
+                    NewsManager.getInstance().deleteNews(newsID);
+                    Main.getInstance().setCenter(new NewsList());
+                }
+            });
             box.getChildren().addAll(editButton, deleteButton);
             setGraphic(box);
         }

@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.HTMLEditor;
 import pl.gebickionline.communication.News;
+import pl.gebickionline.ui.Main;
 
 /**
  * Created by Łukasz on 2016-01-31.
@@ -13,6 +14,8 @@ public class NewsEditor extends GridPane {
 
     private final HTMLEditor editor = new HTMLEditor();
     private final TextField title = new TextField();
+    private final Button saveButton = new Button("Zapisz");
+    private final Button cancelButton = new Button("Anuluj");
 
     public NewsEditor(News news) {
         super();
@@ -32,11 +35,10 @@ public class NewsEditor extends GridPane {
         add(contentLabel, 0, 1);
         add(editor, 1, 1);
 
+        cancelButton.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsList()));
+
         ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(
-                new Button("Zapisz"),
-                new Button("Anuluj")
-        );
+        buttonBar.getButtons().addAll(saveButton, cancelButton);
         add(buttonBar, 1, 2);
 
     }
