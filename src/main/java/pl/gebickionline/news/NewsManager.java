@@ -30,6 +30,10 @@ public class NewsManager {
         return communicationManager.getNewsList();
     }
 
+    public News getNews(long id) {
+        return getNewsList().stream().filter(n -> n.id().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Wpis nie istnieje"));
+    }
+
     public void turnOnNewsVisibility() {
         communicationManager.turnOnNewsVisibility();
     }

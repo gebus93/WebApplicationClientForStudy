@@ -66,6 +66,12 @@ public class PriceListContainerVBox extends VBox {
 
     public ScrollPane getWrappedByScrollPane() {
         ScrollPane priceListScrollPane = new ScrollPane();
+        priceListScrollPane.setMaxHeight(Double.MAX_VALUE);
+        priceListScrollPane.setPrefHeight(USE_COMPUTED_SIZE);
+        priceListScrollPane.setMinHeight(USE_COMPUTED_SIZE);
+        priceListScrollPane.setMaxWidth(Double.MAX_VALUE);
+        priceListScrollPane.setPrefWidth(USE_COMPUTED_SIZE);
+        priceListScrollPane.setMinWidth(USE_COMPUTED_SIZE);
         priceListScrollPane.setContent(this);
         priceListScrollPane.setFitToHeight(true);
         priceListScrollPane.setFitToWidth(true);

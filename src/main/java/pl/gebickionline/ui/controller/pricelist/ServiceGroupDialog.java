@@ -46,7 +46,7 @@ public class ServiceGroupDialog extends Dialog<ManageableGroup> {
         saveButton.setDisable(group.groupName() == null || group.groupName().trim().isEmpty());
 
         groupNameField.setOnKeyReleased(event -> {
-            saveButton.setDisable(groupNameField.getText().isEmpty());
+            saveButton.setDisable(groupNameField.getText() == null || groupNameField.getText().isEmpty());
         });
 
         setResultConverter(dialogButton -> {

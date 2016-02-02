@@ -142,3 +142,15 @@
 .nav-bar-button:hover Label {
     -fx-text-fill: #333;
 }
+
+.center {
+    -fx-alignment: center;
+}
+
+.center-left {
+    -fx-alignment: center-left;
+}
+
+.padding-horizontal {
+    -fx-padding: 0px 5px 0px 5px;
+}

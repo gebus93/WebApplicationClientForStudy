@@ -40,6 +40,14 @@ public class NewsList extends VBox {
         TableColumn updateDate = new TableColumn("Ostatnia modyfikacja");
         TableColumn actions = new TableColumn("Akcje");
 
+        id.getStyleClass().add("center");
+        creationDate.getStyleClass().add("center");
+        updateDate.getStyleClass().add("center");
+        actions.getStyleClass().add("center");
+
+        title.getStyleClass().addAll("center-left", "padding-horizontal");
+
+
         changeColumnWidth(id, 0.1);
         changeColumnWidth(title, 0.25);
         changeColumnWidth(creationDate, 0.2);
@@ -51,6 +59,7 @@ public class NewsList extends VBox {
         creationDate.setCellValueFactory(new PropertyValueFactory<NewsVO, Long>("creationDate"));
         updateDate.setCellValueFactory(new PropertyValueFactory<NewsVO, Long>("lastUpdateDate"));
         actions.setCellValueFactory(new PropertyValueFactory<NewsVO, Long>("id"));
+        actions.setCellFactory(param -> new ActionsCell());
 
         table.getColumns().addAll(
                 id,
