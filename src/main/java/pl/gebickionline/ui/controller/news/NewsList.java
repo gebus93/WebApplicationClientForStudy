@@ -4,20 +4,21 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import pl.gebickionline.news.NewsManager;
 
 /**
  * Created by Łukasz on 2016-01-31.
  */
-public class NewsList extends VBox {
+public class NewsList extends BorderPane {
     private TableView table = new TableView();
-    private final Label header = new Label("Lista aktualności");
+    private final VBox header = new VBox();
+    private final Label headerTitle = new Label("Lista aktualności");
     private final ObservableList<NewsVO> newsList = FXCollections.observableArrayList();
 
     public NewsList() {
         super();
-
+        headerTitle.getStyleClass().addAll("pricelist-group-name");
         NewsManager
                 .getInstance()
                 .getNewsList()
@@ -26,10 +27,9 @@ public class NewsList extends VBox {
 
         initializeTable();
 
-        getChildren().addAll(
-                header,
-                table
-        );
+        header.getChildren().addAll(headerTitle, new NewsVisibilityManagementBar());
+        setTop(header);
+        setCenter(table);
     }
 
     private void initializeTable() {
@@ -45,14 +45,14 @@ public class NewsList extends VBox {
         updateDate.getStyleClass().add("center");
         actions.getStyleClass().add("center");
 
-        title.getStyleClass().addAll("center-left", "padding-horizontal");
+        title.getStyleClass().addAll("center-left");
 
 
         changeColumnWidth(id, 0.1);
-        changeColumnWidth(title, 0.25);
+        changeColumnWidth(title, 0.35);
         changeColumnWidth(creationDate, 0.2);
         changeColumnWidth(updateDate, 0.2);
-        changeColumnWidth(actions, 0.25);
+        changeColumnWidth(actions, 0.15);
 
         id.setCellValueFactory(new PropertyValueFactory<NewsVO, Long>("id"));
         title.setCellValueFactory(new PropertyValueFactory<NewsVO, Long>("title"));

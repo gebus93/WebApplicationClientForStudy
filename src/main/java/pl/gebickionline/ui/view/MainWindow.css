@@ -86,27 +86,27 @@
     -fx-text-fill: #eee;
 }
 
-.menu:hover {
+.menu-bar .menu:hover {
     -fx-background-color: #eee, linear-gradient(to bottom, #eee 0%, #eee 90%, #aaa 100%);
 }
 
-.menu:hover .label {
+.menu-bar .menu:hover .label {
     -fx-text-fill: #333;
 }
 
-.menu-item .label {
+.menu-bar .menu-item .label {
     -fx-text-fill: white !important;
 }
 
-.menu-item:focused {
+.menu-bar .menu-item:focused {
     -fx-background-color: #555;
 }
 
-.menu-item:focused .label {
+.menu-bar .menu-item:focused .label {
     -fx-text-fill: #eee;
 }
 
-.context-menu {
+.menu-bar .context-menu {
     -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
     -fx-background-color: black;
     -fx-background-insets: 0, 1, 2;
