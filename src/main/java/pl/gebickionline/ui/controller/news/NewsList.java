@@ -2,10 +2,12 @@ package pl.gebickionline.ui.controller.news;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.*;
+import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import pl.gebickionline.news.NewsManager;
+import pl.gebickionline.ui.Main;
 
 /**
  * Created by Łukasz on 2016-01-31.
@@ -27,9 +29,31 @@ public class NewsList extends BorderPane {
 
         initializeTable();
 
-        header.getChildren().addAll(headerTitle, new NewsVisibilityManagementBar());
+        HBox newsCreationBar = newsCreationBar();
+        NewsVisibilityManagementBar newsVisibilityManagementBar = new NewsVisibilityManagementBar();
+        header.getChildren().addAll(
+                headerTitle,
+                newsVisibilityManagementBar,
+                newsCreationBar
+        );
+        header.setMargin(newsVisibilityManagementBar, new Insets(5, 0, 5, 0));
+        header.setMargin(newsCreationBar, new Insets(5, 0, 5, 0));
+
         setTop(header);
         setCenter(table);
+    }
+
+    private HBox newsCreationBar() {
+        HBox box = new HBox();
+        final Label label = new Label("Dodawanie nowej aktualności:");
+        label.setPadding(new Insets(0, 5, 0, 25));
+        label.setAlignment(Pos.CENTER);
+        label.setMaxHeight(Double.MAX_VALUE);
+
+        Button button = new Button("Dodaj wpis");
+        button.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsEditor("Dodawanie nowego wpisu")));
+        box.getChildren().addAll(label, button);
+        return box;
     }
 
     private void initializeTable() {

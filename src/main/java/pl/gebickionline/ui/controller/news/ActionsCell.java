@@ -21,7 +21,7 @@ class ActionsCell extends TableCell<NewsVO, Long> {
             VBox editButton = getImageButton("edit.png", "Edytuj wpis");
             VBox deleteButton = getImageButton("delete.png", "Usuń wpis");
             News news = NewsManager.getInstance().getNews(newsID);
-            editButton.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsEditor(news)));
+            editButton.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsEditor(news, "Edycja wpisu")));
             deleteButton.setOnMouseClicked(event -> {
                 Optional<ButtonType> buttonType = new ConfirmationAlert(
                         String.format("Usuwanie wpisu \"%s\"", news.title()),
