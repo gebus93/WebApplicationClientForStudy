@@ -5,7 +5,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.web.HTMLEditor;
 import pl.gebickionline.communication.News;
+import pl.gebickionline.news.NewsManager;
 import pl.gebickionline.ui.Main;
+import pl.gebickionline.ui.controller.ConfirmationAlert;
+
+import java.util.Optional;
 
 /**
  * Created by Łukasz on 2016-01-31.
@@ -14,13 +18,12 @@ public class NewsEditor extends BorderPane {
 
     private final HTMLEditor editor = new HTMLEditor();
     private final TextField title = new TextField();
-    private final Button saveButton = new Button("Zapisz");
-    private final Button cancelButton = new Button("Anuluj");
+    private Optional<Long> newsId;
 
 
     public NewsEditor(News news, String title) {
         super();
-
+        newsId = Optional.ofNullable(news.id());
         setTop(getTitle(title));
         setCenter(getEditor(news));
 
@@ -64,11 +67,49 @@ public class NewsEditor extends BorderPane {
         gridPane.add(editor, 1, 1);
         GridPane.setHgrow(editor, Priority.ALWAYS);
 
-        cancelButton.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsList()));
-
         ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(saveButton, cancelButton);
+        buttonBar.getButtons().addAll(getSaveButton(), getCancelButton());
         gridPane.add(buttonBar, 1, 2);
         return gridPane;
+    }
+
+    private Button getCancelButton() {
+        Button button = new Button("Anuluj");
+        button.setOnMouseClicked(event -> Main.getInstance().setCenter(new NewsList()));
+        return button;
+    }
+
+    private Button getSaveButton() {
+        Button button = new Button("Zapisz");
+        button.setOnMouseClicked(event -> {
+            if (!dataIsValid()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Błąd walidacji danych");
+                alert.setHeaderText("Nieprawidłowo wypełniony formularz");
+                alert.setContentText("Wszystkie pola z formularza muszą zostać wypełnione");
+                alert.show();
+                return;
+            }
+            NewsManager newsManager = NewsManager.getInstance();
+            if (newsId.isPresent()) {
+                Optional<ButtonType> buttonType = new ConfirmationAlert(
+                        "Potwierdzenie zapisania zmian",
+                        "Czy na pewno chcesz zapisać zmiany w edytowany wpisie?\nDane zostaną zmienione bezpowrotnie."
+                ).showAndWait();
+
+                if (buttonType.get() == ButtonType.YES)
+                    newsManager.modifyNews(newsId.get(), title.getText(), editor.getHtmlText());
+            } else
+                newsManager.addNews(title.getText(), editor.getHtmlText());
+
+            Main.getInstance().setCenter(new NewsList());
+        });
+        return button;
+    }
+
+    private boolean dataIsValid() {
+
+        return title.getText() != null && !title.getText().isEmpty()
+                && editor.getHtmlText() != null && !editor.getHtmlText().isEmpty();
     }
 }
